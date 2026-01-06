@@ -1,0 +1,194 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Playfair Display', serif;
+}
+
+/* Custom Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: white;
+}
+
+main {
+    background-color: white;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Mobile Menu Styles */
+.mobile-menu-item {
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.mobile-menu-submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.mobile-menu-submenu:not(.hidden) {
+    max-height: 500px;
+    transition: max-height 0.3s ease-in;
+}
+
+.mobile-submenu-toggle i.rotate-180 {
+    transform: rotate(180deg);
+}
+
+/* Responsive Utilities */
+@media (max-width: 640px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    /* Mobile header adjustments */
+    .main-header nav {
+        flex-wrap: wrap;
+    }
+    
+    /* Mobile search panel */
+    #search-panel {
+        width: 100% !important;
+    }
+    
+    /* Mobile cart sidebar */
+    #cart-sidebar {
+        width: 100% !important;
+    }
+    
+    /* Mobile menu button visibility */
+    #mobile-menu-toggle {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Ensure mobile menu is properly positioned */
+    #mobile-menu {
+        z-index: 9999 !important;
+    }
+    
+    #mobile-menu-overlay {
+        z-index: 9998 !important;
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .main-header nav {
+        gap: 2rem;
+    }
+}
+
+/* Desktop adjustments */
+@media (min-width: 1025px) {
+    .main-header nav {
+        gap: 3rem;
+    }
+}
+
+/* Ensure dropdowns work on hover */
+@media (min-width: 1024px) {
+    .group:hover .group-hover\:opacity-100 {
+        opacity: 1;
+    }
+    
+    .group:hover .group-hover\:visible {
+        visibility: visible;
+    }
+}
+
+/* Flaticon Icon Base Styles */
+.fi {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    font-family: 'uicons-regular-rounded', 'uicons-bold-rounded', 'uicons-solid-rounded', 'uicons-brands' !important;
+}
+
+/* Ensure proper icon sizing */
+.fi-brands-whatsapp,
+.fi-brands-instagram,
+.fi-brands-facebook,
+.fi-brands-twitter,
+.fi-brands-linkedin {
+    font-size: inherit;
+    font-family: 'uicons-brands' !important;
+}
+
+/* Fix icon display */
+[class^="fi-"], [class*=" fi-"] {
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Theme Colors */
+:root {
+    --primary-color: #9333ea;
+    --secondary-color: #ec4899;
+    --accent-color: #f97316;
+}
+
+/* Smooth transitions */
+* {
+    transition-property: color, background-color, border-color, transform, opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+/* Custom scrollbar for modals */
+.modal-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #9333ea, #ec4899);
+    border-radius: 10px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #7e22ce, #db2777);
+}
