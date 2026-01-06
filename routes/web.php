@@ -150,3 +150,8 @@ Route::get('/terms', function () {
 Route::get('/privacy', function () {
     return view('Pages.privacy');
 })->name('privacy');
+
+// Product Detail Route
+Route::get('/product/{id}', function ($id) {
+    return view('Pages.product-detail', ['productId' => $id]);
+})->name('product.detail');
