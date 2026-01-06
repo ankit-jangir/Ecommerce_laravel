@@ -320,6 +320,85 @@ html {
     }
 }
 
+/* Responsive Product Cards - Proper sizing for phone, tablet, desktop */
+.product-card {
+    width: 100%;
+}
+
+/* Mobile - Small Cards (Phone) */
+@media (max-width: 639px) {
+    .product-grid-lifestyle .product-card img,
+    .product-grid-traditional .product-card img,
+    .suits-collection .product-card img {
+        height: 250px !important;
+    }
+    
+    .bestsellers .product-card img {
+        height: 280px !important;
+    }
+    
+    .product-card h3 {
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .product-card p {
+        font-size: 0.75rem;
+    }
+}
+
+/* Tablet - Medium Cards */
+@media (min-width: 640px) and (max-width: 1023px) {
+    .product-grid-lifestyle .product-card img,
+    .product-grid-traditional .product-card img,
+    .suits-collection .product-card img {
+        height: 300px !important;
+    }
+    
+    .bestsellers .product-card img {
+        height: 320px !important;
+    }
+    
+    .product-card h3 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Desktop - Large Cards */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .product-grid-lifestyle .product-card img,
+    .product-grid-traditional .product-card img,
+    .suits-collection .product-card img {
+        height: 500px !important;
+    }
+    
+    .bestsellers .product-card img {
+        height: 400px !important;
+    }
+    
+    .product-card h3 {
+        font-size: 1.125rem;
+    }
+}
+
+/* Extra Large Desktop - Original Size */
+@media (min-width: 1280px) {
+    .product-grid-lifestyle .product-card img,
+    .product-grid-traditional .product-card img,
+    .suits-collection .product-card img {
+        height: 600px !important;
+    }
+    
+    .bestsellers .product-card img {
+        height: 450px !important;
+    }
+    
+    .product-card h3 {
+        font-size: 1.25rem;
+    }
+}
+
 /* Newsletter Signup Responsive */
 .newsletter-signup form {
     flex-direction: column;

@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 // Home
 Route::get('/', function () {
-    return view('Pages.home');
+    $products = \App\Helpers\MockData::getHomepageProducts();
+    $heroImages = \App\Helpers\MockData::getHeroImages();
+    $collectionImages = \App\Helpers\MockData::getCollectionImages();
+    return view('Pages.home', compact('products', 'heroImages', 'collectionImages'));
 })->name('home');
 
 // New In
@@ -153,5 +156,6 @@ Route::get('/privacy', function () {
 
 // Product Detail Route
 Route::get('/product/{id}', function ($id) {
-    return view('Pages.product-detail', ['productId' => $id]);
+    $product = \App\Helpers\MockData::getProductById($id);
+    return view('Pages.product-detail', ['productId' => $id, 'product' => $product]);
 })->name('product.detail');
