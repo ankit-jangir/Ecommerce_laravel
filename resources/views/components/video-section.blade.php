@@ -37,8 +37,28 @@
         @endif
     </div>
     
-    <!-- Optional Content Below Video -->
-    @if(isset($showContent) && $showContent)
+    <!-- Content Below Video - Show for Women Kurtis -->
+    @if(isset($alwaysShowContent) && $alwaysShowContent)
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 bg-white">
+        <div class="text-center max-w-4xl mx-auto">
+            <h3 class="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#654321] mb-4 sm:mb-6">Discover Elegant Women's Kurtis</h3>
+            <p class="text-base sm:text-lg lg:text-xl text-gray-700 leading-relaxed mb-4">
+                Experience the perfect blend of traditional elegance and modern style with our premium collection of women's kurtis. Each piece is carefully crafted to bring comfort, sophistication, and timeless beauty to your wardrobe.
+            </p>
+            <p class="text-sm sm:text-base text-gray-600">
+                From casual everyday wear to festive celebrations, find the perfect kurti that speaks to your unique style.
+            </p>
+            <div class="mt-6 sm:mt-8">
+                <a href="{{ route('women') }}" class="inline-block px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-4 bg-[#8B4513] text-white hover:bg-[#654321] transition-all duration-300 rounded-full font-semibold text-sm sm:text-base">
+                    Shop Women's Collection
+                </a>
+            </div>
+        </div>
+    </div>
+    @endif
+    
+    <!-- Optional Content Below Video (Legacy Support) -->
+    @if(isset($showContent) && $showContent && !isset($alwaysShowContent))
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         <div class="text-center">
             <h3 class="text-xl sm:text-2xl lg:text-3xl font-serif text-[#654321] mb-4">AURA KURTIS</h3>
