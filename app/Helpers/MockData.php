@@ -18,7 +18,7 @@ class MockData
                     'discount' => 24,
                     'badge' => 'NEW',
                     'badge_color' => 'red',
-                    'image' => asset('images/productimg2.jpg'),
+                    'image' => asset('images/productimg8.webp'),
                     'category' => 'Anarkali',
                     'fabric' => 'Cotton'
                 ],
@@ -57,7 +57,7 @@ class MockData
                     'discount' => 30,
                     'badge' => 'EXCLUSIVE',
                     'badge_color' => 'purple',
-                    'image' => asset('images/productimg7.jpg'),
+                    'image' => asset('images/productimg11.webp'),
                     'category' => 'Kurti Set',
                     'fabric' => 'Cotton'
                 ],
@@ -74,7 +74,7 @@ class MockData
                     'discount' => 29,
                     'badge' => 'PREMIUM',
                     'badge_color' => 'red',
-                    'image' => asset('images/productimg8.webp'),
+                    'image' => asset('images/productimg1.webp'),
                     'category' => 'Embroidered',
                     'fabric' => 'Silk'
                 ],
@@ -87,7 +87,7 @@ class MockData
                     'discount' => null,
                     'badge' => 'POPULAR',
                     'badge_color' => 'pink',
-                    'image' => asset('images/productimg10.jpg'),
+                    'image' => asset('images/productimg2.jpg'),
                     'category' => 'Anarkali',
                     'fabric' => 'Silk'
                 ],
@@ -100,7 +100,7 @@ class MockData
                     'discount' => 23,
                     'badge' => 'LIMITED',
                     'badge_color' => 'blue',
-                    'image' => asset('images/productimg11.webp'),
+                    'image' => asset('images/productimg4.webp'),
                     'category' => 'Printed',
                     'fabric' => 'Cotton'
                 ],
@@ -120,112 +120,160 @@ class MockData
             ],
             
             // Bestsellers - Extended for slider
-            'bestsellers' => [
-                [
-                    'id' => 'red-embroidered-kurti',
-                    'name' => 'Red Embroidered Kurti',
-                    'description' => 'Festival Special',
-                    'price' => 3299,
-                    'original_price' => 4499,
-                    'discount' => 27,
-                    'badge' => '#1 BESTSELLER',
-                    'badge_color' => 'red',
-                    'image' => asset('images/productimg2.jpg'),
-                    'category' => 'Embroidered',
-                    'fabric' => 'Cotton'
-                ],
-                [
-                    'id' => 'pink-floral-anarkali',
-                    'name' => 'Pink Floral Anarkali',
-                    'description' => 'Casual Elegance',
-                    'price' => 2699,
-                    'original_price' => null,
-                    'discount' => null,
-                    'badge' => 'TRENDING',
-                    'badge_color' => 'pink',
-                    'image' => asset('images/productimg3.webp'),
-                    'category' => 'Anarkali',
-                    'fabric' => 'Georgette'
-                ],
-                [
-                    'id' => 'designer-party-kurti-bestseller',
-                    'name' => 'Designer Party Kurti',
-                    'description' => 'Evening Wear',
-                    'price' => 3999,
-                    'original_price' => 5499,
-                    'discount' => 27,
-                    'badge' => 'EXCLUSIVE',
-                    'badge_color' => 'purple',
-                    'image' => asset('images/productimg5.webp'),
-                    'category' => 'Party Wear',
-                    'fabric' => 'Silk'
-                ],
-                [
-                    'id' => 'printed-kurti-set',
-                    'name' => 'Printed Kurti Set',
-                    'description' => 'Complete Outfit',
-                    'price' => 3499,
-                    'original_price' => 4999,
-                    'discount' => 30,
-                    'badge' => 'NEW',
-                    'badge_color' => 'green',
-                    'image' => asset('images/productimg7.jpg'),
-                    'category' => 'Kurti Set',
-                    'fabric' => 'Cotton'
-                ],
-                [
-                    'id' => 'embroidered-suit-set',
-                    'name' => 'Embroidered Suit Set',
-                    'description' => 'Traditional Set',
-                    'price' => 5999,
-                    'original_price' => 7999,
-                    'discount' => 25,
-                    'badge' => 'PREMIUM',
-                    'badge_color' => 'red',
-                    'image' => asset('images/productimg8.webp'),
-                    'category' => 'Suit Set',
-                    'fabric' => 'Silk'
-                ],
-                [
-                    'id' => 'silk-anarkali-kurti',
-                    'name' => 'Silk Anarkali Kurti',
-                    'description' => 'Luxury Collection',
-                    'price' => 4799,
-                    'original_price' => null,
-                    'discount' => null,
-                    'badge' => 'POPULAR',
-                    'badge_color' => 'pink',
-                    'image' => asset('images/productimg10.jpg'),
-                    'category' => 'Anarkali',
-                    'fabric' => 'Silk'
-                ],
-                [
-                    'id' => 'casual-printed-kurti',
-                    'name' => 'Casual Printed Kurti',
-                    'description' => 'Everyday Wear',
-                    'price' => 2199,
-                    'original_price' => 2999,
-                    'discount' => 27,
-                    'badge' => 'LIMITED',
-                    'badge_color' => 'blue',
-                    'image' => asset('images/productimg11.webp'),
-                    'category' => 'Printed',
-                    'fabric' => 'Cotton'
-                ],
-                [
-                    'id' => 'party-wear-kurti',
-                    'name' => 'Party Wear Kurti',
-                    'description' => 'Festive Collection',
-                    'price' => 4299,
-                    'original_price' => 5999,
-                    'discount' => 28,
-                    'badge' => 'HOT',
-                    'badge_color' => 'orange',
-                    'image' => asset('images/productimg12.jpg'),
-                    'category' => 'Party Wear',
-                    'fabric' => 'Georgette'
-                ],
-            ],
+          'bestsellers' => [
+
+    [
+        'id' => 'cotton-petals-coord-set',
+        'name' => 'Cotton Petals – Soft and Delicate Cotton Co-Ord Set',
+        'description' => 'Complete Outfit',
+        'price' => 1350,
+        'original_price' => 2450,
+        'discount' => 44,
+        'badge' => '-44%',
+        'badge_color' => 'red',
+        'image' => asset('images/carousel_img1.webp'),
+        'hover_image' => asset('images/carousel_img2_back.webp'),
+        'category' => 'Co-Ord Set',
+        'fabric' => 'Cotton'
+    ],
+
+    [
+        'id' => 'blue-ethnic-kurti-set',
+        'name' => 'Blue Ethnic Printed Kurti Set',
+        'description' => 'Festive Elegance',
+        'price' => 1599,
+        'original_price' => 2799,
+        'discount' => 43,
+        'badge' => '-43%',
+        'badge_color' => 'red',
+        'image' => asset('images/carousel_img2.webp'),
+        'hover_image' => asset('images/carousel_img1_back.jpg'),
+        'category' => 'Kurti Set',
+        'fabric' => 'Rayon'
+    ],
+
+    [
+        'id' => 'floral-anarkali-set',
+        'name' => 'Floral Cotton Anarkali Set',
+        'description' => 'Casual Elegance',
+        'price' => 1899,
+        'original_price' => 3299,
+        'discount' => 42,
+        'badge' => '-42%',
+        'badge_color' => 'red',
+        'image' => asset('images/carousel_img3.jpg'),
+        'hover_image' => asset('images/carousel_img3_back.webp'),
+        'category' => 'Anarkali',
+        'fabric' => 'Cotton'
+    ],
+
+    [
+        'id' => 'pastel-coord-set',
+        'name' => 'Pastel Printed Cotton Co-Ord Set',
+        'description' => 'Everyday Comfort',
+        'price' => 1499,
+        'original_price' => 2599,
+        'discount' => 42,
+        'badge' => '-42%',
+        'badge_color' => 'red',
+        'image' => asset('images/carousel_img4.jpg'),
+        'hover_image' => asset('images/carousel_img5.webp'),
+        'category' => 'Co-Ord Set',
+        'fabric' => 'Cotton'
+    ],
+
+    [
+        'id' => 'designer-party-coord',
+        'name' => 'Designer Party Wear Co-Ord Set',
+        'description' => 'Evening Wear',
+        'price' => 2199,
+        'original_price' => 3999,
+        'discount' => 45,
+        'badge' => '-45%',
+        'badge_color' => 'red',
+        'image' => asset('images/carousel_img5.webp'),
+        'hover_image' => asset('images/carousel_img4.jpg'),
+        'category' => 'Party Wear',
+        'fabric' => 'Georgette'
+    ],
+
+    [
+        'id' => 'printed-rayon-kurti',
+        'name' => 'Printed Rayon Straight Kurti',
+        'description' => 'Daily Wear',
+        'price' => 999,
+        'original_price' => 1799,
+        'discount' => 44,
+        'badge' => '-44%',
+        'badge_color' => 'red',
+        'image' => asset('images/carousel_img6.jpg'),
+        'hover_image' => asset('images/carousel_img7.jpg'),
+        'category' => 'Kurti',
+        'fabric' => 'Rayon'
+    ],
+
+    [
+        'id' => 'embroidered-festive-set',
+        'name' => 'Embroidered Festive Kurti Set',
+        'description' => 'Traditional Style',
+        'price' => 2699,
+        'original_price' => 4799,
+        'discount' => 44,
+        'badge' => '-44%',
+        'badge_color' => 'red',
+        'image' => asset('images/carousel_img7.jpg'),
+        'hover_image' => asset('images/carousel_img6.jpg'),
+        'category' => 'Festive Wear',
+        'fabric' => 'Cotton Silk'
+    ],
+
+    [
+        'id' => 'soft-linen-kurti',
+        'name' => 'Soft Linen Minimal Kurti',
+        'description' => 'Elegant Everyday',
+        'price' => 1799,
+        'original_price' => 2999,
+        'discount' => 40,
+        'badge' => '-40%',
+        'badge_color' => 'red',
+        'image' => asset('images/carousel_img8.webp'),
+        'hover_image' => asset('images/carousel_img5.webp'),
+        'category' => 'Kurti',
+        'fabric' => 'Linen'
+    ],
+
+    // [
+    //     'id' => 'handblock-cotton-set',
+    //     'name' => 'Handblock Printed Cotton Kurti Set',
+    //     'description' => 'Artisan Collection',
+    //     'price' => 2299,
+    //     'original_price' => 3899,
+    //     'discount' => 41,
+    //     'badge' => '-41%',
+    //     'badge_color' => 'red',
+    //     'image' => asset('images/carousel_img9.webp'),
+    //     'hover_image' => asset('images/carousel_img9_back.webp'),
+    //     'category' => 'Kurti Set',
+    //     'fabric' => 'Cotton'
+    // ],
+
+    // [
+    //     'id' => 'luxury-silk-anarkali',
+    //     'name' => 'Luxury Silk Anarkali Kurti',
+    //     'description' => 'Premium Occasion Wear',
+    //     'price' => 3499,
+    //     'original_price' => 5999,
+    //     'discount' => 42,
+    //     'badge' => '-42%',
+    //     'badge_color' => 'red',
+    //     'image' => asset('images/carousel_img10.webp'),
+    //     'hover_image' => asset('images/carousel_img10_back.webp'),
+    //     'category' => 'Anarkali',
+    //     'fabric' => 'Silk'
+    // ],
+
+],
+
             
             // Suits Collection
             'suits' => [
@@ -251,7 +299,7 @@ class MockData
                     'discount' => null,
                     'badge' => 'POPULAR',
                     'badge_color' => 'pink',
-                    'image' => asset('images/productimg2.jpg'),
+                    'image' => asset('images/bestsellers_productimg1.webp'),
                     'category' => 'Suit Set',
                     'fabric' => 'Cotton'
                 ],
@@ -264,7 +312,7 @@ class MockData
                     'discount' => 30,
                     'badge' => 'EXCLUSIVE',
                     'badge_color' => 'purple',
-                    'image' => asset('images/productimg3.webp'),
+                    'image' => asset('images/bestsellers_productimg2.webp'),
                     'category' => 'Suit Set',
                     'fabric' => 'Georgette'
                 ],
@@ -277,7 +325,7 @@ class MockData
                     'discount' => 25,
                     'badge' => 'NEW',
                     'badge_color' => 'green',
-                    'image' => asset('images/productimg5.webp'),
+                    'image' => asset('images/bestsellers_productimg3.webp'),
                     'category' => 'Suit Set',
                     'fabric' => 'Cotton'
                 ],
@@ -297,10 +345,10 @@ class MockData
     public static function getCollectionImages()
     {
         return [
-            'patterned' => asset('images/productimg5.webp'),
-            'anarkali' => asset('images/productimg7.jpg'),
-            'casual' => asset('images/productimg8.webp'),
-            'complete' => asset('images/productimg10.jpg'),
+            'patterned' => asset('images/collection_img1.webp'),
+            'anarkali' => asset('images/collection_img2.webp'),
+            'casual' => asset('images/casual_img1.jpg'),
+            'complete' => asset('images/casual_img2.webp'),
         ];
     }
     
