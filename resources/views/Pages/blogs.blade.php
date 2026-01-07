@@ -4,145 +4,174 @@
 
 @section('content')
 
-<section class="bg-[#FFF8F0] py-14">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+@php
+$blogs = [
+[
+'title' => 'Everyday Kurti Styling for Office',
+'category' => 'styling-guides',
+'badge' => 'Styling',
+'image' => 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600',
+'date' => '12 Jan 2026',
+'read' => '5 min read',
+'tags' => ['Kurti','Office Wear','Fashion']
+],
+[
+'title' => 'Festive Kurti Looks for Evening Parties',
+'category' => 'festive-wear',
+'badge' => 'Festive',
+'image' => 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600',
+'date' => '15 Jan 2026',
+'read' => '6 min read',
+'tags' => ['Festive','Ethnic','Trends']
+],
+[
+'title' => 'Top Kurti Trends This Season',
+'category' => 'trends',
+'badge' => 'Trends',
+'image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600',
+'date' => '18 Jan 2026',
+'read' => '4 min read',
+'tags' => ['Trends','Kurti','Style']
+],
+[
+'title' => 'How to Pair Kurtis with Dupattas',
+'category' => 'fashion-tips',
+'badge' => 'Tips',
+'image' => 'https://images.unsplash.com/photo-1520975916090-3105956dac38?w=600',
+'date' => '20 Jan 2026',
+'read' => '3 min read',
+'tags' => ['Tips','Dupatta','Fashion']
+],
+[
+'title' => 'Minimal Kurti Looks for Daily Wear',
+'category' => 'styling-guides',
+'badge' => 'Daily',
+'image' => 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600',
+'date' => '22 Jan 2026',
+'read' => '5 min read',
+'tags' => ['Daily Wear','Kurti','Comfort']
+],
+[
+'title' => 'Wedding Ready Kurti Styles',
+'category' => 'festive-wear',
+'badge' => 'Wedding',
+'image' => 'https://images.unsplash.com/photo-1503342394128-c104d54dba01?w=600',
+'date' => '25 Jan 2026',
+'read' => '7 min read',
+'tags' => ['Wedding','Festive','Ethnic']
+],
+];
+@endphp
 
-        <!-- Header -->
-        <div class="text-center mb-14">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#5A3A1A]">
-                Aura Fashion Journal
-            </h1>
-            <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
-                Curated fashion stories, styling guides & trends inspired by Indian elegance.
-            </p>
-        </div>
+<!-- HERO -->
+<section class="bg-gradient-to-b from-[#FFF3E8] to-white pt-20 pb-16">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#5A3A1A]">
+            Aura Fashion Journal
+        </h1>
+        <p class="mt-5 text-gray-600 max-w-2xl mx-auto text-lg">
+            Discover styling secrets, festive trends & timeless kurti inspiration curated for modern Indian women.
+        </p>
+    </div>
+</section>
 
-        <!-- Sticky Filters -->
-        <div class="sticky top-20 z-30 bg-[#FFF8F0] py-4 mb-14">
-            <div class="flex flex-wrap justify-center gap-3">
-                <button class="px-5 py-2 rounded-full bg-[#8B4513] text-white text-sm font-semibold shadow">
-                    All
-                </button>
-                <button
-                    class="px-5 py-2 rounded-full bg-white text-[#8B4513] border border-[#8B4513] text-sm font-semibold hover:bg-[#8B4513] hover:text-white transition">
-                    Fashion Tips
-                </button>
-                <button
-                    class="px-5 py-2 rounded-full bg-white text-[#8B4513] border border-[#8B4513] text-sm font-semibold hover:bg-[#8B4513] hover:text-white transition">
-                    Styling Guides
-                </button>
-                <button
-                    class="px-5 py-2 rounded-full bg-white text-[#8B4513] border border-[#8B4513] text-sm font-semibold hover:bg-[#8B4513] hover:text-white transition">
-                    Trends
-                </button>
-                <button
-                    class="px-5 py-2 rounded-full bg-white text-[#8B4513] border border-[#8B4513] text-sm font-semibold hover:bg-[#8B4513] hover:text-white transition">
-                    Festive Wear
-                </button>
-            </div>
-        </div>
-
-        <!-- Featured Blog -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-20">
-            <div class="relative rounded-3xl overflow-hidden group shadow-lg">
-                <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?w=1200"
-                    class="w-full h-[420px] object-cover transform group-hover:scale-110 transition duration-700">
-
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-
-                <div class="absolute bottom-6 left-6 right-6 text-white">
-                    <span class="bg-[#8B4513] px-4 py-1 text-xs rounded-full uppercase tracking-wider">
-                        Featured
-                    </span>
-                    <h2 class="text-2xl sm:text-3xl font-serif font-bold mt-4">
-                        How to Style Kurtis for Festive Evenings
-                    </h2>
-                    <p class="text-sm mt-3 opacity-90">
-                        Discover elegant styling tips that elevate your festive look effortlessly.
-                    </p>
-                    <a href="#" class="inline-block mt-5 text-sm font-semibold underline underline-offset-4">
-                        Read Full Story →
-                    </a>
-                </div>
-            </div>
-
-            <!-- Featured Side Blogs -->
-            <div class="space-y-8">
-                @for($i=1;$i<=2;$i++) <article class="flex gap-5 bg-white rounded-2xl shadow-md overflow-hidden group">
-                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&sig={{$i}}"
-                        class="w-40 h-40 object-cover transform group-hover:scale-110 transition duration-500">
-
-                    <div class="p-4">
-                        <span class="text-xs text-[#8B4513] uppercase font-semibold">Trending</span>
-                        <h3 class="font-serif font-bold text-lg text-[#5A3A1A] mt-1">
-                            Latest Kurti Trends {{ $i }}
-                        </h3>
-                        <p class="text-sm text-gray-600 mt-2 line-clamp-2">
-                            Explore what's trending this season in ethnic fashion.
-                        </p>
-                        <a href="#" class="text-sm font-semibold text-[#8B4513] mt-3 inline-block">
-                            Read More →
-                        </a>
-                    </div>
-                    </article>
-                    @endfor
-            </div>
-        </div>
-
-        <!-- Blog Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            @for($i=1;$i<=9;$i++) <article
-                class="bg-white rounded-3xl shadow-md overflow-hidden group hover:shadow-xl transition">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&sig={{$i}}"
-                        class="w-full h-60 object-cover transform group-hover:scale-110 transition duration-700">
-
-                    <span
-                        class="absolute top-4 left-4 bg-white/90 px-3 py-1 rounded-full text-xs font-semibold text-[#8B4513]">
-                        Styling
-                    </span>
-                </div>
-
-                <div class="p-6 space-y-3">
-                    <div class="flex items-center text-xs text-gray-500 gap-4">
-                        <span>🗓 12 Jan 2026</span>
-                        <span>⏱ 5 min read</span>
-                    </div>
-
-                    <h3 class="text-xl font-serif font-bold text-[#5A3A1A]">
-                        Everyday Kurti Styling {{ $i }}
-                    </h3>
-
-                    <p class="text-sm text-gray-600 line-clamp-3">
-                        Simple yet elegant ways to style kurtis for daily wear & office looks.
-                    </p>
-
-                    <!-- Tags -->
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <span class="px-3 py-1 bg-[#FFF1E6] text-xs rounded-full text-[#8B4513]">Kurti</span>
-                        <span class="px-3 py-1 bg-[#FFF1E6] text-xs rounded-full text-[#8B4513]">Office Wear</span>
-                        <span class="px-3 py-1 bg-[#FFF1E6] text-xs rounded-full text-[#8B4513]">Fashion</span>
-                    </div>
-
-                    <a href="#" class="inline-block mt-4 font-semibold text-[#8B4513]">
-                        Read More →
-                    </a>
-                </div>
-                </article>
-                @endfor
-        </div>
-
-        <!-- Pagination -->
-        <div class="flex justify-center mt-16 gap-2">
-            <button class="px-4 py-2 rounded-md bg-[#8B4513] text-white font-semibold">1</button>
-            <button class="px-4 py-2 rounded-md bg-white border border-[#8B4513] text-[#8B4513]">2</button>
-            <button class="px-4 py-2 rounded-md bg-white border border-[#8B4513] text-[#8B4513]">3</button>
-            <button class="px-4 py-2 rounded-md bg-white border border-[#8B4513] text-[#8B4513]">
-                Next →
+<!-- FILTER TABS -->
+<section class="sticky top-20 z-30 bg-white/95 backdrop-blur border-b border-[#EED9C4] py-4">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-wrap justify-center gap-3" id="blogTabs">
+            @foreach(['All','Fashion Tips','Styling Guides','Trends','Festive Wear'] as $filter)
+            <button data-filter="{{ strtolower(str_replace(' ','-',$filter)) }}" class="tab-btn px-6 py-2 rounded-full text-sm font-semibold transition
+                {{ $filter === 'All'
+                    ? 'bg-[#8B4513] text-white shadow active'
+                    : 'bg-white text-[#8B4513] border border-[#8B4513]' }}">
+                {{ $filter }}
             </button>
+            @endforeach
         </div>
+    </div>
+</section>
+
+<!-- BLOG GRID -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+
+        @foreach($blogs as $blog)
+        <article data-category="{{ $blog['category'] }}"
+            class="blog-card bg-white rounded-3xl overflow-hidden shadow-md hover:-translate-y-1 hover:shadow-xl transition group">
+
+            <div class="relative overflow-hidden">
+                <img src="{{ $blog['image'] }}"
+                    class="w-full h-60 object-cover transition duration-700 group-hover:scale-110">
+
+                <span
+                    class="absolute top-4 left-4 bg-white/90 px-3 py-1 rounded-full text-xs font-semibold text-[#8B4513]">
+                    {{ $blog['badge'] }}
+                </span>
+            </div>
+
+            <div class="p-6">
+                <div class="flex justify-between text-xs text-gray-500 mb-2">
+                    <span>{{ $blog['date'] }}</span>
+                    <span>{{ $blog['read'] }}</span>
+                </div>
+
+                <h3 class="text-xl font-serif font-bold text-[#5A3A1A] leading-snug">
+                    {{ $blog['title'] }}
+                </h3>
+
+                <p class="text-sm text-gray-600 mt-3 line-clamp-3">
+                    Discover elegant kurti styling ideas curated for modern Indian women.
+                </p>
+
+                <div class="flex flex-wrap gap-2 mt-4">
+                    @foreach($blog['tags'] as $tag)
+                    <span class="px-3 py-1 bg-[#FFF1E6] text-xs rounded-full text-[#8B4513]">
+                        {{ $tag }}
+                    </span>
+                    @endforeach
+                </div>
+
+                <a href="#" class="inline-flex items-center gap-2 mt-5 font-semibold text-[#8B4513]">
+                    Read Article
+                    <span class="transition group-hover:translate-x-1">→</span>
+                </a>
+            </div>
+        </article>
+        @endforeach
 
     </div>
 </section>
 
 @endsection
+
+<!-- FILTER JS -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const tabs = document.querySelectorAll(".tab-btn");
+    const cards = document.querySelectorAll(".blog-card");
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+
+            tabs.forEach(t => {
+                t.classList.remove("bg-[#8B4513]", "text-white", "shadow", "active");
+                t.classList.add("bg-white", "text-[#8B4513]", "border",
+                    "border-[#8B4513]");
+            });
+
+            tab.classList.add("bg-[#8B4513]", "text-white", "shadow", "active");
+            tab.classList.remove("bg-white", "text-[#8B4513]", "border");
+
+            const filter = tab.dataset.filter;
+
+            cards.forEach(card => {
+                if (filter === "all" || card.dataset.category === filter) {
+                    card.classList.remove("hidden");
+                } else {
+                    card.classList.add("hidden");
+                }
+            });
+        });
+    });
+});
+</script>
