@@ -14,7 +14,7 @@
             <!-- LEFT IMAGE -->
             <div>
                 <img src="{{ $image }}"
-                     class="w-full h-[680px] object-cover rounded-2xl">
+                     class="w-full h-[680px] rounded-2xl">
             </div>
 
             <!-- RIGHT -->

@@ -63,7 +63,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
                 <a href="{{ route('women') }}" class="relative overflow-hidden rounded-lg group block">
                     <div class="relative w-full aspect-[1/1] overflow-hidden bg-gray-100 rounded-lg">
-                        <img src="{{ asset('images/product_hero_sectionimg1.jpg') }}" alt="Women in Beautiful Kurti"
+                        <img src="{{ asset('images/herotop_img.jpg') }}" alt="Women in Beautiful Kurti"
                             class="absolute inset-0 w-full h-full object-cover object-center
                    group-hover:scale-105 transition-all duration-500" />
                     </div>
