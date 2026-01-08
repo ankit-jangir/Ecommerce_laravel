@@ -21,8 +21,5 @@
             </div>
         </div>
     </div>
-    <button id="close-offer" class="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 text-gray-900 hover:text-gray-700 p-1 hover:bg-yellow-500 rounded transition-all">
-        <i class="fi fi-rr-cross-small text-sm sm:text-base"></i>
-    </button>
 </div>
 
