@@ -1,5 +1,5 @@
-<footer class="footer bg-[#F5F1EB] text-[#654321] relative">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+<footer class="footer border-t border-gray-300 bg-[#F5F1EB] text-[#654321] relative">
+    <div class="container  mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
         <!-- Main Footer Content -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
             <!-- Column 1: Brand Information -->

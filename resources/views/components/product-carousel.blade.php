@@ -81,7 +81,7 @@
                                             </span>
                                         @endif
 
-                                        <!-- ACTION ICONS -->
+                                        <!-- ACTION ICONS - Right Side -->
                                         <div
                                             class="absolute top-3 right-3 flex flex-col gap-2
                         opacity-0 translate-x-3
@@ -90,10 +90,10 @@
 
                                             <!-- LIKE -->
                                             <button type="button"
-                                                class="action-like w-9 h-9 rounded-full bg-white text-[#654321]
+                                                class="w-9 h-9 rounded-full bg-white text-[#654321]
                                flex items-center justify-center shadow
                                hover:bg-[#654321] hover:text-white transition"
-                                                data-id="{{ $product['id'] }}">
+                                                data-wishlist-id="{{ $product['id'] }}">
                                                 <i class="fi fi-rr-heart text-sm"></i>
                                             </button>
 
@@ -110,7 +110,10 @@
                                                 class="action-cart w-9 h-9 rounded-full bg-white text-[#654321]
                                flex items-center justify-center shadow
                                hover:bg-[#654321] hover:text-white transition"
-                                                data-id="{{ $product['id'] }}">
+                                                data-product-id="{{ $product['id'] }}"
+                                                data-product-name="{{ $product['name'] }}"
+                                                data-product-price="{{ $product['price'] }}"
+                                                data-product-image="{{ $product['image'] }}">
                                                 <i class="fi fi-rr-shopping-bag text-sm"></i>
                                             </button>
                                         </div>

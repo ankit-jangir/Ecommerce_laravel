@@ -1,4 +1,3 @@
-<script src="{{ asset('../../js/components/header-functions.js') }}"></script>
 <header class="main-header bg-[#F5F1EB] sticky top-0 z-40 shadow-sm border-b border-[#E8E0D6]">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <nav class="flex items-center justify-between py-4">
@@ -139,20 +138,53 @@
                     class="text-[#654321] hover:text-[#8B4513] focus:outline-none p-2 hover:bg-white/50 rounded-lg transition-all cursor-pointer">
                     <i class="fi fi-rr-search text-lg sm:text-xl"></i>
                 </button>
-                <button
+                <a href="{{ route('wishlist') }}"
                     class="text-[#654321] hover:text-[#8B4513] focus:outline-none p-2 hover:bg-white/50 rounded-lg transition-all relative">
                     <i class="fi fi-rr-heart text-lg sm:text-xl"></i>
-                </button>
+                </a>
                 <button id="cart-toggle"
                     class="text-[#654321] hover:text-[#8B4513] focus:outline-none p-2 hover:bg-white/50 rounded-lg transition-all relative">
                     <i class="fi fi-rr-shopping-bag text-lg sm:text-xl"></i>
                     <span id="cart-count"
                         class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">0</span>
                 </button>
-                <button id="user-toggle"
-                    class="text-[#654321] hover:text-[#8B4513] focus:outline-none p-2 hover:bg-white/50 rounded-lg transition-all">
-                    <i class="fi fi-rr-user text-lg sm:text-xl"></i>
-                </button>
+                <!-- User Icon with Dropdown -->
+                <div class="relative group" id="user-dropdown-container">
+                    <button id="user-icon-btn" type="button"
+                        class="text-[#654321] hover:text-[#8B4513] focus:outline-none p-2 hover:bg-white/50 rounded-lg transition-all relative">
+                        <i class="fi fi-rr-user text-lg sm:text-xl" id="user-icon-default"></i>
+                        <div id="user-icon-letter" class="w-6 h-6 rounded-full bg-[#8B4513] text-white text-xs font-semibold flex items-center justify-center hidden"></div>
+                        <img id="user-icon-image" src="" alt="User" class="w-6 h-6 rounded-full object-cover hidden">
+                    </button>
+                    <!-- User Dropdown Menu -->
+                    <div id="user-dropdown" class="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-2xl border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 hidden">
+                        <div class="p-4 border-b border-gray-200">
+                            <p class="font-semibold text-[#654321] text-lg" id="user-name">User</p>
+                            <p class="text-sm text-blue-600" id="user-email">user@gmail.com</p>
+                        </div>
+                            <div class="py-2">
+                                <a href="{{ route('account.dashboard') }}" class="flex items-center gap-3 px-4 py-2 text-[#654321] hover:bg-[#F5F1EB] transition-colors">
+                                    <i class="fi fi-rr-apps text-lg"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                                <a href="{{ route('account') }}" class="flex items-center gap-3 px-4 py-2 text-[#654321] hover:bg-[#F5F1EB] transition-colors">
+                                    <i class="fi fi-rr-user text-lg"></i>
+                                    <span>My Profile</span>
+                                </a>
+                                <a href="{{ route('account.orders') }}" class="flex items-center gap-3 px-4 py-2 text-[#654321] hover:bg-[#F5F1EB] transition-colors">
+                                    <i class="fi fi-rr-shopping-bag text-lg"></i>
+                                    <span>My Orders</span>
+                                </a>
+                                <a href="{{ route('account.addresses') }}" class="flex items-center gap-3 px-4 py-2 text-[#654321] hover:bg-[#F5F1EB] transition-colors">
+                                    <i class="fi fi-rr-marker text-lg"></i>
+                                    <span>Update Address</span>
+                                </a>
+                                <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 transition-colors border-t border-gray-200 mt-2 pt-2">
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                    </div>
+                </div>
             </div>
         </nav>
     </div>
@@ -336,13 +368,21 @@
         </div>
 
         <!-- Search Input -->
-        <div class="mb-6">
-            <input type="text" id="search-panel-input" placeholder="Product Keyword.."
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] outline-none text-[#654321] placeholder-gray-400 mb-4">
-            <button
-                class="w-full bg-[#654321] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4513] transition-all">
-                Search Product
-            </button>
+        <div class="mb-6 relative">
+            <div class="flex gap-2">
+                <input type="text" id="search-panel-input" placeholder="Search products..."
+                    class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] outline-none text-[#654321] placeholder-gray-400">
+                <button id="search-button" type="button"
+                    class="px-6 py-3 bg-[#8B4513] text-white rounded-lg hover:bg-[#654321] transition-colors font-medium">
+                    <i class="fi fi-rr-search"></i>
+                </button>
+            </div>
+            <!-- Search Suggestions -->
+            <div id="search-suggestions" class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 hidden max-h-96 overflow-y-auto">
+                <div id="suggestions-list" class="py-2">
+                    <!-- Suggestions will be populated here -->
+                </div>
+            </div>
         </div>
 
         <!-- Category Cards -->
@@ -395,10 +435,14 @@
             <h3 class="text-lg font-semibold text-[#654321] mb-4">Search Results</h3>
             <div class="space-y-3" id="search-results-list"></div>
         </div>
+        
+        <!-- Toast Notification Container -->
+        <div id="toast-container" class="fixed top-4 right-4 z-[9999] space-y-2"></div>
     </div>
 </div>
 
-<!-- User/Login Modal -->
+<!-- User/Login Modal (for non-logged in users) -->
+@guest
 <div id="user-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-md transform transition-all relative">
         <button id="user-close"
@@ -413,60 +457,41 @@
                 <h3 class="text-2xl font-serif font-bold text-[#654321] mb-2">Welcome Back!</h3>
                 <p class="text-gray-600">Sign in to your account</p>
             </div>
-            <form class="space-y-4">
-                <input type="email" placeholder="Email"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] outline-none text-[#654321]">
-                <input type="password" placeholder="Password"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] outline-none text-[#654321]">
-                <button type="submit"
-                    class="w-full bg-[#8B4513] text-white py-3 rounded-lg font-semibold hover:bg-[#654321] transition-all">Sign
-                    In</button>
-                <p class="text-sm text-gray-600 text-center">Don't have an account? <a href="#"
+            <form action="{{ route('login') }}" method="GET" class="space-y-4">
+                <a href="{{ route('login') }}"
+                    class="w-full bg-[#8B4513] text-white py-3 rounded-lg font-semibold hover:bg-[#654321] transition-all block text-center">Sign
+                    In</a>
+                <p class="text-sm text-gray-600 text-center">Don't have an account? <a href="{{ route('register') }}"
                         class="text-[#8B4513] font-semibold hover:underline">Sign Up</a></p>
             </form>
         </div>
     </div>
 </div>
+@endguest
 
 <!-- Cart Sidebar -->
 <div id="cart-sidebar"
-    class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
-    <div class="p-6">
+    class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col">
+    <div class="p-6 flex-1 overflow-y-auto">
         <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
             <h2 class="text-2xl font-serif font-bold text-[#654321]">Shopping Cart</h2>
             <button id="cart-close" class="text-gray-400 hover:text-[#8B4513] transition-colors">
                 <i class="fi fi-rr-cross text-2xl"></i>
             </button>
         </div>
-        <div id="cart-items" class="space-y-4 mb-6">
+        <div id="cart-items" class="space-y-4">
             <div class="text-center py-12">
                 <i class="fi fi-rr-shopping-bag text-6xl text-gray-300 mb-4"></i>
                 <p class="text-gray-500">Your cart is empty</p>
             </div>
         </div>
-        <div class="border-t border-gray-200 pt-4 mt-auto">
-            <div class="flex justify-between mb-4">
-                <span class="text-lg font-semibold text-[#654321]">Total:</span>
-                <span id="cart-total" class="text-xl font-bold text-[#8B4513]">₹0</span>
-            </div>
-            <button
-                class="w-full bg-[#8B4513] text-white py-3 rounded-lg font-semibold hover:bg-[#654321] transition-all">Checkout</button>
-        </div>
     </div>
-</div>
-<!-- Wishlist Sidebar -->
-<div id="wishlist-sidebar"
-    class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
-    <div class="p-6">
-        <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
-            <h2 class="text-2xl font-serif font-bold text-[#654321]">Wishlist</h2>
-            <button id="wishlist-toggle"
-                class="text-[#654321] hover:text-[#8B4513] focus:outline-none p-2 hover:bg-white/50 rounded-lg transition-all relative">
-                <i class="fi fi-rr-heart text-lg sm:text-xl"></i>
-            </button>
-
+    <div class="border-t border-gray-200 pt-4 pb-4 px-6 bg-white">
+        <div class="flex justify-between mb-4">
+            <span class="text-lg font-semibold text-[#654321]">Total:</span>
+            <span id="cart-total" class="text-xl font-bold text-[#8B4513]">₹0</span>
         </div>
-
-        <p class="text-gray-500 text-center py-10">Your wishlist is empty ❤️</p>
+        <button onclick="handleCheckout()"
+            class="w-full bg-[#8B4513] text-white py-3 rounded-lg font-semibold hover:bg-[#654321] transition-all">Checkout</button>
     </div>
 </div>

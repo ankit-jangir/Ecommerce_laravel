@@ -130,10 +130,74 @@ Route::get('/contact', function () {
     return view('Pages.contact');
 })->name('contact');
 
-// Search
-Route::get('/search', function () {
-    return view('Pages.search');
-})->name('search');
+// Authentication Routes
+Route::get('/login', function () {
+    return view('Pages.login');
+})->name('login');
+
+Route::get('/register', function () {
+    return view('Pages.register');
+})->name('register');
+
+Route::get('/forgot-password', function () {
+    return view('Pages.forgot-password');
+})->name('forgot-password');
+
+Route::get('/account', function () {
+    return view('Pages.useraccount.account');
+})->name('account');
+
+Route::get('/account/dashboard', function () {
+    return view('Pages.useraccount.dashboard');
+})->name('account.dashboard');
+
+Route::get('/account/orders', function () {
+    return view('Pages.useraccount.orders');
+})->name('account.orders');
+
+Route::get('/account/coupons', function () {
+    return view('Pages.useraccount.coupons');
+})->name('account.coupons');
+
+Route::get('/account/subscriptions', function () {
+    return view('Pages.useraccount.subscriptions');
+})->name('account.subscriptions');
+
+Route::get('/account/returns', function () {
+    return view('Pages.useraccount.returns');
+})->name('account.returns');
+
+Route::get('/wishlist', function () {
+    return view('Pages.wishlist');
+})->name('wishlist');
+
+Route::get('/account/loyalty', function () {
+    return view('Pages.useraccount.loyalty');
+})->name('account.loyalty');
+
+Route::get('/account/referrals', function () {
+    return view('Pages.useraccount.referrals');
+})->name('account.referrals');
+
+Route::get('/account/gift-cards', function () {
+    return view('Pages.useraccount.gift-cards');
+})->name('account.gift-cards');
+
+Route::get('/account/addresses', function () {
+    return view('Pages.useraccount.addresses');
+})->name('account.addresses');
+
+Route::get('/orders', function () {
+    return view('Pages.useraccount.orders');
+})->name('orders');
+
+Route::get('/address', function () {
+    return view('Pages.useraccount.addresses');
+})->name('address');
+
+Route::post('/logout', function () {
+    return redirect('/login');
+})->name('logout');
 
 // Footer Pages
 Route::get('/about-us', function () {
@@ -159,6 +223,26 @@ Route::get('/terms', function () {
 Route::get('/privacy', function () {
     return view('Pages.privacy');
 })->name('privacy');
+
+Route::get('/checkout', function () {
+    return view('Pages.checkout');
+})->name('checkout');
+
+Route::get('/payment', function () {
+    return view('Pages.payment');
+})->name('payment');
+
+Route::get('/account/orders/{id}', function ($id) {
+    return view('Pages.useraccount.order-detail', compact('id'));
+})->name('account.order.detail');
+
+Route::get('/account/orders/{id}/track', function ($id) {
+    return view('Pages.useraccount.track-order', compact('id'));
+})->name('account.order.track');
+
+Route::get('/account/returns/{id}/track', function ($id) {
+    return view('Pages.useraccount.track-return', compact('id'));
+})->name('account.return.track');
 
 // Product Detail Route
 Route::get('/product/{id}', function ($id) {

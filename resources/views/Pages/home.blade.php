@@ -4,55 +4,55 @@
 
 @section('content')
 
-   <section class="relative w-full h-[65vh] sm:h-[75vh] lg:h-[90vh] overflow-hidden">
+    <section class="relative w-full h-[65vh] sm:h-[75vh] lg:h-[90vh] overflow-hidden">
 
-    <!-- BACKGROUND IMAGE -->
-    <div class="absolute inset-0">
-        <img src="{{ asset('images/banner_img1.webp') }}"
-             alt="Winter Kurta Collection"
-             class="w-full h-full object-cover object-[center_30%]
+        <!-- BACKGROUND IMAGE -->
+        <div class="absolute inset-0">
+            <img src="{{ asset('images/banner_img1.webp') }}" alt="Winter Kurta Collection"
+                class="w-full h-full object-cover object-[center_30%]
                     brightness-75">
 
-        <!-- OVERLAY -->
-        <div class="absolute inset-0
+            <!-- OVERLAY -->
+            <div
+                class="absolute inset-0
                     bg-gradient-to-r
                     from-black/70 via-black/40 to-transparent">
+            </div>
         </div>
-    </div>
 
-    <!-- CONTENT -->
-    <div class="relative z-10 h-full flex items-center">
-        <div class="px-4 sm:px-8 lg:px-16 max-w-4xl">
+        <!-- CONTENT -->
+        <div class="relative z-10 h-full flex items-center">
+            <div class="px-4 sm:px-8 lg:px-16 max-w-4xl">
 
-            <h1
-                class="text-white font-serif font-bold tracking-wide
+                <h1
+                    class="text-white font-serif font-bold tracking-wide
                        leading-tight
                        text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
-                WINTER STAPLES
-            </h1>
+                    WINTER STAPLES
+                </h1>
 
-            <p
-                class="mt-3 sm:mt-4
+                <p
+                    class="mt-3 sm:mt-4
                        text-white/90
                        text-sm sm:text-base md:text-lg lg:text-xl
                        max-w-xl">
-                Elegant kurtis for every occasion
-            </p>
+                    Elegant kurtis for every occasion
+                </p>
 
-            <a href="{{ route('women') }}"
-               class="inline-block mt-6 sm:mt-8
+                <a href="{{ route('women') }}"
+                    class="inline-block mt-6 sm:mt-8
                       px-8 sm:px-10 py-3 sm:py-3.5
                       bg-white text-[#654321]
                       rounded-full font-semibold
                       text-sm sm:text-base
                       hover:bg-[#F5F1EB]
                       transition">
-                Shop Collection
-            </a>
+                    Shop Collection
+                </a>
 
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
 
 
@@ -157,35 +157,60 @@
                 Lifestyle Collection</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                 @foreach ($products['lifestyle'] ?? [] as $product)
-                    <a href="{{ route('product.detail', ['id' => $product['id']]) }}"
-                        class="group cursor-pointer block product-card">
-                        <div class="relative overflow-hidden mb-2 sm:mb-3 md:mb-4 rounded-lg bg-white">
-                            <div class="relative w-full aspect-square overflow-hidden">
-                                <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
-                                    class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
-                            </div>
-                            <span
-                                class="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold {{ $product['badge_color'] === 'red' ? 'bg-red-500' : ($product['badge_color'] === 'yellow' ? 'bg-yellow-500' : ($product['badge_color'] === 'green' ? 'bg-green-500' : ($product['badge_color'] === 'purple' ? 'bg-purple-500' : ($product['badge_color'] === 'pink' ? 'bg-pink-500' : ($product['badge_color'] === 'blue' ? 'bg-blue-500' : ($product['badge_color'] === 'orange' ? 'bg-orange-500' : 'bg-gray-500')))))) }}">{{ $product['badge'] }}</span>
-                        </div>
-                        <h3
-                            class="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-[#654321] mb-1 sm:mb-2
-           relative inline-block
-           after:content-[''] after:absolute after:left-0 after:-bottom-0.5
-           after:w-0 after:h-[2px] after:bg-[#654321]
-           after:transition-all after:duration-300
-           group-hover:after:w-full">
-                            {{ $product['name'] }}
-                        </h3>
-
-                        <p class="text-xs sm:text-sm text-gray-500 mb-1">{{ $product['description'] }}</p>
-                        <p class="text-sm sm:text-base md:text-lg text-[#8B4513] font-semibold">
-                            ₹{{ number_format($product['price']) }}
-                            @if ($product['original_price'])
+                    <div class="group cursor-pointer block product-card relative">
+                        <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
+                            <div class="relative overflow-hidden mb-2 sm:mb-3 md:mb-4 rounded-lg bg-white">
+                                <div class="relative w-full aspect-square overflow-hidden">
+                                    <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
+                                        class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+                                </div>
                                 <span
-                                    class="text-xs sm:text-sm text-gray-400 line-through ml-1 sm:ml-2">₹{{ number_format($product['original_price']) }}</span>
-                            @endif
-                        </p>
-                    </a>
+                                    class="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold {{ $product['badge_color'] === 'red' ? 'bg-red-500' : ($product['badge_color'] === 'yellow' ? 'bg-yellow-500' : ($product['badge_color'] === 'green' ? 'bg-green-500' : ($product['badge_color'] === 'purple' ? 'bg-purple-500' : ($product['badge_color'] === 'pink' ? 'bg-pink-500' : ($product['badge_color'] === 'blue' ? 'bg-blue-500' : ($product['badge_color'] === 'orange' ? 'bg-orange-500' : 'bg-gray-500')))))) }}">{{ $product['badge'] }}</span>
+
+                                <!-- Action Icons - Right Side -->
+                                <div
+                                    class="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                                    <button type="button" data-wishlist-id="{{ $product['id'] }}"
+                                        class="w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30">
+                                        <i class="fi fi-rr-heart text-sm"></i>
+                                    </button>
+                                    <a href="{{ route('product.detail', ['id' => $product['id']]) }}"
+                                        class="w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30">
+                                        <i class="fi fi-rr-eye text-sm"></i>
+                                    </a>
+                                    <button type="button"
+                                        class="action-cart w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30"
+                                        data-product-id="{{ $product['id'] }}" data-product-name="{{ $product['name'] }}"
+                                        data-product-price="{{ $product['price'] }}"
+                                        data-product-image="{{ $product['image'] }}">
+                                        <i class="fi fi-rr-shopping-bag text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="px-1">
+                            <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
+                                <h3
+                                    class="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-[#654321] mb-1 sm:mb-2
+               relative inline-block
+               after:content-[''] after:absolute after:left-0 after:-bottom-0.5
+               after:w-0 after:h-[2px] after:bg-[#654321]
+               after:transition-all after:duration-300
+               group-hover:after:w-full">
+                                    {{ $product['name'] }}
+                                </h3>
+                            </a>
+
+                            <p class="text-xs sm:text-sm text-gray-500 mb-1">{{ $product['description'] }}</p>
+                            <p class="text-sm sm:text-base md:text-lg text-[#8B4513] font-semibold">
+                                ₹{{ number_format($product['price']) }}
+                                @if ($product['original_price'])
+                                    <span
+                                        class="text-xs sm:text-sm text-gray-400 line-through ml-1 sm:ml-2">₹{{ number_format($product['original_price']) }}</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
                 @endforeach
             </div>
         </div>
@@ -199,35 +224,61 @@
                 Traditional Collection</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                 @foreach ($products['traditional'] ?? [] as $product)
-                    <a href="{{ route('product.detail', ['id' => $product['id']]) }}"
-                        class="group cursor-pointer block product-card">
-                        <div class="relative overflow-hidden mb-2 sm:mb-3 md:mb-4 rounded-lg bg-white">
-                            <div class="relative w-full aspect-square overflow-hidden">
-                                <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
-                                    class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
-                            </div>
-                            <span
-                                class="absolute top-2 left-2 sm:top-3 sm:left-3 md:top-4 md:left-4 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold {{ $product['badge_color'] === 'red' ? 'bg-red-500' : ($product['badge_color'] === 'yellow' ? 'bg-yellow-500' : ($product['badge_color'] === 'green' ? 'bg-green-500' : ($product['badge_color'] === 'purple' ? 'bg-purple-500' : ($product['badge_color'] === 'pink' ? 'bg-pink-500' : ($product['badge_color'] === 'blue' ? 'bg-blue-500' : ($product['badge_color'] === 'orange' ? 'bg-orange-500' : 'bg-gray-500')))))) }}">{{ $product['badge'] }}</span>
-                        </div>
-                        <h3
-                            class="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-[#654321] mb-1 sm:mb-2
-           relative inline-block
-           after:content-[''] after:absolute after:left-0 after:-bottom-0.5
-           after:w-0 after:h-[2px] after:bg-[#654321]
-           after:transition-all after:duration-300
-           group-hover:after:w-full">
-                            {{ $product['name'] }}
-                        </h3>
-
-                        <p class="text-xs sm:text-sm text-gray-500 mb-1">{{ $product['description'] }}</p>
-                        <p class="text-sm sm:text-base md:text-lg text-[#8B4513] font-semibold">
-                            ₹{{ number_format($product['price']) }}
-                            @if ($product['original_price'])
+                    <div class="group cursor-pointer block product-card relative">
+                        <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
+                            <div class="relative overflow-hidden mb-2 sm:mb-3 md:mb-4 rounded-lg bg-white">
+                                <div class="relative w-full aspect-square overflow-hidden">
+                                    <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
+                                        class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+                                </div>
                                 <span
-                                    class="text-xs sm:text-sm text-gray-400 line-through ml-1 sm:ml-2">₹{{ number_format($product['original_price']) }}</span>
-                            @endif
-                        </p>
-                    </a>
+                                    class="absolute top-2 left-2 sm:top-3 sm:left-3 md:top-4 md:left-4 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold {{ $product['badge_color'] === 'red' ? 'bg-red-500' : ($product['badge_color'] === 'yellow' ? 'bg-yellow-500' : ($product['badge_color'] === 'green' ? 'bg-green-500' : ($product['badge_color'] === 'purple' ? 'bg-purple-500' : ($product['badge_color'] === 'pink' ? 'bg-pink-500' : ($product['badge_color'] === 'blue' ? 'bg-blue-500' : ($product['badge_color'] === 'orange' ? 'bg-orange-500' : 'bg-gray-500')))))) }}">{{ $product['badge'] }}</span>
+
+                                <!-- Action Icons - Right Side -->
+                                <div
+                                    class="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                                    <button type="button" data-wishlist-id="{{ $product['id'] }}"
+                                        class="w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30">
+                                        <i class="fi fi-rr-heart text-sm"></i>
+                                    </button>
+                                    <a href="{{ route('product.detail', ['id' => $product['id']]) }}"
+                                        class="w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30">
+                                        <i class="fi fi-rr-eye text-sm"></i>
+                                    </a>
+                                    <button type="button"
+                                        class="action-cart w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30"
+                                        data-product-id="{{ $product['id'] }}"
+                                        data-product-name="{{ $product['name'] }}"
+                                        data-product-price="{{ $product['price'] }}"
+                                        data-product-image="{{ $product['image'] }}">
+                                        <i class="fi fi-rr-shopping-bag text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="px-1">
+                            <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
+                                <h3
+                                    class="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-[#654321] mb-1 sm:mb-2
+               relative inline-block
+               after:content-[''] after:absolute after:left-0 after:-bottom-0.5
+               after:w-0 after:h-[2px] after:bg-[#654321]
+               after:transition-all after:duration-300
+               group-hover:after:w-full">
+                                    {{ $product['name'] }}
+                                </h3>
+                            </a>
+
+                            <p class="text-xs sm:text-sm text-gray-500 mb-1">{{ $product['description'] }}</p>
+                            <p class="text-sm sm:text-base md:text-lg text-[#8B4513] font-semibold">
+                                ₹{{ number_format($product['price']) }}
+                                @if ($product['original_price'])
+                                    <span
+                                        class="text-xs sm:text-sm text-gray-400 line-through ml-1 sm:ml-2">₹{{ number_format($product['original_price']) }}</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
                 @endforeach
             </div>
         </div>
@@ -241,35 +292,61 @@
                 Premium Suits Collection</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                 @foreach ($products['suits'] ?? [] as $product)
-                    <a href="{{ route('product.detail', ['id' => $product['id']]) }}"
-                        class="group cursor-pointer block product-card">
-                        <div class="relative overflow-hidden mb-2 sm:mb-3 md:mb-4 rounded-lg bg-white">
-                            <div class="relative w-full aspect-square overflow-hidden">
-                                <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
-                                    class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
-                            </div>
-                            <span
-                                class="absolute top-2 left-2 sm:top-3 sm:left-3 md:top-4 md:left-4 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold {{ $product['badge_color'] === 'red' ? 'bg-red-500' : ($product['badge_color'] === 'yellow' ? 'bg-yellow-500' : ($product['badge_color'] === 'green' ? 'bg-green-500' : ($product['badge_color'] === 'purple' ? 'bg-purple-500' : ($product['badge_color'] === 'pink' ? 'bg-pink-500' : ($product['badge_color'] === 'blue' ? 'bg-blue-500' : ($product['badge_color'] === 'orange' ? 'bg-orange-500' : 'bg-gray-500')))))) }}">{{ $product['badge'] }}</span>
-                        </div>
-                        <h3
-                            class="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-[#654321] mb-1 sm:mb-2
-           relative inline-block
-           after:content-[''] after:absolute after:left-0 after:-bottom-0.5
-           after:w-0 after:h-[2px] after:bg-[#654321]
-           after:transition-all after:duration-300
-           group-hover:after:w-full">
-                            {{ $product['name'] }}
-                        </h3>
-
-                        <p class="text-xs sm:text-sm text-gray-500 mb-1">{{ $product['description'] }}</p>
-                        <p class="text-sm sm:text-base md:text-lg text-[#8B4513] font-semibold">
-                            ₹{{ number_format($product['price']) }}
-                            @if ($product['original_price'])
+                    <div class="group cursor-pointer block product-card relative">
+                        <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
+                            <div class="relative overflow-hidden mb-2 sm:mb-3 md:mb-4 rounded-lg bg-white">
+                                <div class="relative w-full aspect-square overflow-hidden">
+                                    <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
+                                        class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
+                                </div>
                                 <span
-                                    class="text-xs sm:text-sm text-gray-400 line-through ml-1 sm:ml-2">₹{{ number_format($product['original_price']) }}</span>
-                            @endif
-                        </p>
-                    </a>
+                                    class="absolute top-2 left-2 sm:top-3 sm:left-3 md:top-4 md:left-4 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold {{ $product['badge_color'] === 'red' ? 'bg-red-500' : ($product['badge_color'] === 'yellow' ? 'bg-yellow-500' : ($product['badge_color'] === 'green' ? 'bg-green-500' : ($product['badge_color'] === 'purple' ? 'bg-purple-500' : ($product['badge_color'] === 'pink' ? 'bg-pink-500' : ($product['badge_color'] === 'blue' ? 'bg-blue-500' : ($product['badge_color'] === 'orange' ? 'bg-orange-500' : 'bg-gray-500')))))) }}">{{ $product['badge'] }}</span>
+
+                                <!-- Action Icons - Right Side -->
+                                <div
+                                    class="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                                    <button type="button" data-wishlist-id="{{ $product['id'] }}"
+                                        class="w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30">
+                                        <i class="fi fi-rr-heart text-sm"></i>
+                                    </button>
+                                    <a href="{{ route('product.detail', ['id' => $product['id']]) }}"
+                                        class="w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30">
+                                        <i class="fi fi-rr-eye text-sm"></i>
+                                    </a>
+                                    <button type="button"
+                                        class="action-cart w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30"
+                                        data-product-id="{{ $product['id'] }}"
+                                        data-product-name="{{ $product['name'] }}"
+                                        data-product-price="{{ $product['price'] }}"
+                                        data-product-image="{{ $product['image'] }}">
+                                        <i class="fi fi-rr-shopping-bag text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="px-1">
+                            <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
+                                <h3
+                                    class="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-[#654321] mb-1 sm:mb-2
+               relative inline-block
+               after:content-[''] after:absolute after:left-0 after:-bottom-0.5
+               after:w-0 after:h-[2px] after:bg-[#654321]
+               after:transition-all after:duration-300
+               group-hover:after:w-full">
+                                    {{ $product['name'] }}
+                                </h3>
+                            </a>
+
+                            <p class="text-xs sm:text-sm text-gray-500 mb-1">{{ $product['description'] }}</p>
+                            <p class="text-sm sm:text-base md:text-lg text-[#8B4513] font-semibold">
+                                ₹{{ number_format($product['price']) }}
+                                @if ($product['original_price'])
+                                    <span
+                                        class="text-xs sm:text-sm text-gray-400 line-through ml-1 sm:ml-2">₹{{ number_format($product['original_price']) }}</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
                 @endforeach
             </div>
         </div>
