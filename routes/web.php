@@ -109,10 +109,16 @@ Route::get('/shop', function () {
     return view('Pages.shop');
 })->name('shop');
 
-// Blogs
+// BLOG LIST PAGE
 Route::get('/blogs', function () {
     return view('Pages.blogs');
 })->name('blogs');
+
+// BLOG DETAIL PAGE
+Route::get('/blogs/{slug}', function ($slug) {
+    return view('Pages.blogdetail', compact('slug'));
+})->name('blog.detail');
+
 
 // Gifting
 Route::get('/gifting', function () {

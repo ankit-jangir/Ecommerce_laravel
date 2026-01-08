@@ -7,6 +7,7 @@
 @php
 $blogs = [
 [
+'slug' => 'everyday-kurti-styling-for-office',    
 'title' => 'Everyday Kurti Styling for Office',
 'category' => 'styling-guides',
 'badge' => 'Styling',
@@ -16,6 +17,7 @@ $blogs = [
 'tags' => ['Kurti','Office Wear','Fashion']
 ],
 [
+'slug' => 'festive-kurti-looks-for-evening-parties',    
 'title' => 'Festive Kurti Looks for Evening Parties',
 'category' => 'festive-wear',
 'badge' => 'Festive',
@@ -25,6 +27,7 @@ $blogs = [
 'tags' => ['Festive','Ethnic','Trends']
 ],
 [
+'slug' => 'top-kurti-trends-this-season',    
 'title' => 'Top Kurti Trends This Season',
 'category' => 'trends',
 'badge' => 'Trends',
@@ -34,6 +37,7 @@ $blogs = [
 'tags' => ['Trends','Kurti','Style']
 ],
 [
+'slug' => 'how-to-pair-kurtis-with-dupattas',    
 'title' => 'How to Pair Kurtis with Dupattas',
 'category' => 'fashion-tips',
 'badge' => 'Tips',
@@ -43,6 +47,7 @@ $blogs = [
 'tags' => ['Tips','Dupatta','Fashion']
 ],
 [
+'slug' => 'Minimal-Kurti-Looks-for-Daily-Wear',    
 'title' => 'Minimal Kurti Looks for Daily Wear',
 'category' => 'styling-guides',
 'badge' => 'Daily',
@@ -52,6 +57,7 @@ $blogs = [
 'tags' => ['Daily Wear','Kurti','Comfort']
 ],
 [
+'slug' => 'Wedding-Ready-Kurti-Styles',
 'title' => 'Wedding Ready Kurti Styles',
 'category' => 'festive-wear',
 'badge' => 'Wedding',
@@ -131,10 +137,12 @@ $blogs = [
                     @endforeach
                 </div>
 
-                <a href="#" class="inline-flex items-center gap-2 mt-5 font-semibold text-[#8B4513]">
-                    Read Article
-                    <span class="transition group-hover:translate-x-1">→</span>
-                </a>
+                <a href="{{ route('blog.detail', $blog['slug']) }}"
+   class="inline-flex items-center gap-2 mt-5 font-semibold text-[#8B4513]">
+    Read Article
+    <span class="transition group-hover:translate-x-1">→</span>
+</a>
+
             </div>
         </article>
         @endforeach

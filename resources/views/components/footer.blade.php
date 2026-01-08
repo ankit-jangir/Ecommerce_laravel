@@ -35,6 +35,7 @@
                 <h3 class="text-base font-bold text-[#654321] mb-4 sm:mb-6">Customer Support</h3>
                 <ul class="space-y-3 text-sm">
                     <li><a href="{{ route('contact') }}" class="text-gray-600 hover:text-[#8B4513] transition-colors">Contact Us</a></li>
+                    <li><a href="{{ route('about-us') }}" class="text-gray-600 hover:text-[#8B4513] transition-colors">About us</a></li>
                     <li><a href="{{ route('size-guide') }}" class="text-gray-600 hover:text-[#8B4513] transition-colors">Size Guide</a></li>
                     <li><a href="{{ route('returns') }}" class="text-gray-600 hover:text-[#8B4513] transition-colors">Returns</a></li>
                     <li><a href="{{ route('faq') }}" class="text-gray-600 hover:text-[#8B4513] transition-colors">FAQ</a></li>
