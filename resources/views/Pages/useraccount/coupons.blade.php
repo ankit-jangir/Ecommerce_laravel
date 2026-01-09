@@ -15,7 +15,7 @@
                 <!-- Main Content -->
                 <div class="flex-1 min-w-0">
                     <h1 class="text-2xl sm:text-3xl font-serif font-bold text-[#654321] mb-6">My Coupons</h1>
-                    <div id="coupons-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div id="coupons-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <!-- Coupons will be populated here -->
                     </div>
                 </div>

@@ -53,7 +53,7 @@
                 <div class="carousel-track flex gap-4 transition-transform duration-500 ease-in-out">
                     @if (!empty($products))
                         @foreach ($products as $product)
-                            <div class="flex-shrink-0 w-[240px] sm:w-[280px] md:w-[320px]">
+                            <div class="flex-shrink-0 w-[200px] sm:w-[240px] md:w-[280px] lg:w-[320px]">
                                 <div class="group relative bg-white rounded-xl overflow-hidden">
 
                                     <!-- IMAGE WRAPPER -->
@@ -84,9 +84,9 @@
                                         <!-- ACTION ICONS - Right Side -->
                                         <div
                                             class="absolute top-3 right-3 flex flex-col gap-2
-                        opacity-0 translate-x-3
+                        opacity-100 lg:opacity-0 translate-x-0 lg:translate-x-3
                         transition-all duration-300
-                        group-hover:opacity-100 group-hover:translate-x-0 z-20">
+                        lg:group-hover:opacity-100 lg:group-hover:translate-x-0 z-20">
 
                                             <!-- LIKE -->
                                             <button type="button"

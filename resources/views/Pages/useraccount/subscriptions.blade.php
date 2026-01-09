@@ -8,11 +8,6 @@
     
     <section class="py-6 sm:py-8 bg-[#F5F1EB] min-h-screen">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Mobile Menu Toggle -->
-            <button id="account-mobile-sidebar-toggle" class="lg:hidden mb-4 px-4 py-2 bg-white rounded-lg shadow-md flex items-center gap-2 text-[#654321]">
-                <i class="fi fi-rr-menu-burger"></i>
-                <span>Menu</span>
-            </button>
             
             <div class="flex flex-col lg:flex-row gap-6">
                 <!-- Left Sidebar -->

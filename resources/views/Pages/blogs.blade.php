@@ -119,33 +119,35 @@
     @endphp
 
     <!-- HERO -->
-    <section class="bg-gradient-to-b from-[#FFF3E8] to-white pt-20 pb-16">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#5A3A1A]">
+    <section class="bg-gradient-to-b from-[#FFF3E8] to-white pt-16 sm:pt-20 pb-8 sm:pb-12">
+        <div class="container mx-auto px-4 sm:px-6 text-center">
+            <h1 class="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-black leading-tight">
                 Aura Fashion Journal
             </h1>
-            <p class="mt-5 text-gray-600 max-w-2xl mx-auto text-lg">
+            <p class="mt-3 sm:mt-5 text-gray-600 max-w-2xl mx-auto text-sm sm:text-base lg:text-lg px-2">
                 Discover styling secrets, festive trends & timeless kurti inspiration curated for modern Indian women.
             </p>
         </div>
     </section>
 
     <!-- FILTER TABS -->
-    <section class="sticky top-20 bg-white border-b py-4 z-30">
-    <div class="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
-        @foreach(['all','fashion-tips','styling-guides','trends','festive-wear'] as $cat)
-            <button data-filter="{{ $cat }}"
-                class="tab-btn px-5 py-2 rounded-full border text-sm font-semibold
-                {{ $cat=='all'?'bg-[#8B4513] text-white':'text-[#8B4513]' }}">
-                {{ ucwords(str_replace('-',' ',$cat)) }}
-            </button>
-        @endforeach
-    </div>
-</section>
+    <section class="bg-white border-b py-3 sm:py-4">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="flex overflow-x-auto scrollbar-hide gap-2 sm:gap-3 justify-start sm:justify-center max-w-3xl mx-auto pb-1">
+                @foreach (['all', 'fashion-tips', 'styling-guides', 'trends', 'festive-wear'] as $cat)
+                    <button data-filter="{{ $cat }}"
+                        class="tab-btn px-4 sm:px-5 py-2 rounded-full border border-[#8B4513] text-xs sm:text-sm font-semibold whitespace-nowrap flex-shrink-0
+                    {{ $cat == 'all' ? 'bg-[#8B4513] text-white border-[#8B4513]' : 'text-[#8B4513] bg-white' }}">
+                        {{ ucwords(str_replace('-', ' ', $cat)) }}
+                    </button>
+                @endforeach
+            </div>
+        </div>
+    </section>
 
     <!-- BLOG GRID -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+    <section class="py-8 sm:py-12 lg:py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
 
             @foreach ($blogs as $blog)
                 <article data-category="{{ $blog['category'] }}"
@@ -153,38 +155,38 @@
 
                     <div class="relative overflow-hidden">
                         <img src="{{ $blog['image'] }}"
-                            class="w-full h-60 object-cover transition duration-700 group-hover:scale-110">
+                            class="w-full h-48 sm:h-56 lg:h-60 object-cover transition duration-700 group-hover:scale-110">
 
                         <span
-                            class="absolute top-4 left-4 bg-white/90 px-3 py-1 rounded-full text-xs font-semibold text-[#8B4513]">
+                            class="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/90 px-2 sm:px-3 py-1 rounded-full text-xs font-semibold text-[#8B4513]">
                             {{ $blog['badge'] }}
                         </span>
                     </div>
 
-                    <div class="p-6">
+                    <div class="p-4 sm:p-6">
                         <div class="flex justify-between text-xs text-gray-500 mb-2">
                             <span>{{ $blog['date'] }}</span>
                             <span>{{ $blog['read'] }}</span>
                         </div>
 
-                        <h3 class="text-xl font-serif font-bold text-[#5A3A1A] leading-snug">
+                        <h3 class="text-lg sm:text-xl font-bold text-black leading-snug">
                             {{ $blog['title'] }}
                         </h3>
 
-                        <p class="text-sm text-gray-600 mt-3 line-clamp-3">
+                        <p class="text-xs sm:text-sm text-gray-600 mt-2 sm:mt-3 line-clamp-3">
                             Discover elegant kurti styling ideas curated for modern Indian women.
                         </p>
 
-                        <div class="flex flex-wrap gap-2 mt-4">
+                        <div class="flex flex-wrap gap-2 mt-3 sm:mt-4">
                             @foreach ($blog['tags'] as $tag)
-                                <span class="px-3 py-1 bg-[#FFF1E6] text-xs rounded-full text-[#8B4513]">
+                                <span class="px-2 sm:px-3 py-1 bg-[#FFF1E6] text-xs rounded-full text-[#8B4513]">
                                     {{ $tag }}
                                 </span>
                             @endforeach
                         </div>
 
                         <a href="{{ route('blog.detail', $blog['slug']) }}"
-                            class="inline-flex items-center gap-2 mt-5 font-semibold text-[#8B4513]">
+                            class="inline-flex items-center gap-2 mt-4 sm:mt-5 text-sm sm:text-base font-semibold text-[#8B4513]">
                             Read Article
                             <span class="transition group-hover:translate-x-1">→</span>
                         </a>
@@ -195,30 +197,40 @@
 
         </div>
         <!-- PAGINATION -->
-        <div class="flex justify-center items-center gap-2 mt-14">
+        <div class="flex flex-wrap justify-center items-center gap-2 mt-8 sm:mt-12 lg:mt-14 px-4">
 
             @if ($page > 1)
-                <a href="?page={{ $page - 1 }}" class="px-4 py-2 border rounded">← Prev</a>
+                <a href="?page={{ $page - 1 }}" class="px-3 sm:px-4 py-2 text-sm sm:text-base border rounded">← Prev</a>
             @endif
 
             @for ($p = 1; $p <= $totalPages; $p++)
                 <a href="?page={{ $p }}"
-                    class="px-4 py-2 rounded border
+                    class="px-3 sm:px-4 py-2 text-sm sm:text-base rounded border
 {{ $p == $page ? 'bg-[#8B4513] text-white' : '' }}">
                     {{ $p }}
                 </a>
             @endfor
 
             @if ($page < $totalPages)
-                <a href="?page={{ $page + 1 }}" class="px-4 py-2 border rounded">Next →</a>
+                <a href="?page={{ $page + 1 }}" class="px-3 sm:px-4 py-2 text-sm sm:text-base border rounded">Next →</a>
             @endif
 
         </div>
     </section>
-
+    <x-product-carousel id="bestsellers" title="Our best sellers" :products="$products['bestsellers']" />
+    <x-newsletter-signup />
 @endsection
 
 <!-- FILTER JS -->
+<style>
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+</style>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const tabs = document.querySelectorAll(".tab-btn");

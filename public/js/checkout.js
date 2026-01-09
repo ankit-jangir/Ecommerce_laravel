@@ -1,4 +1,8 @@
 // Checkout Page Functions
+function showToast(message, type = 'info') {
+    alert(message);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     
@@ -36,34 +40,171 @@ document.addEventListener('DOMContentLoaded', function() {
         form.querySelector('[name="email"]').value = currentUser.email || '';
     }
     
-    // Handle form submission
-    if (form) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Validate form
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
+    // Function to handle checkout submission
+    function handleCheckoutSubmit() {
+        const form = document.getElementById('checkout-form');
+        if (!form) {
+            console.error('Checkout form not found');
+            if (typeof showToast === 'function') {
+                showToast('Form not found. Please refresh the page.', 'error');
             }
-            
-            const formData = new FormData(form);
-            const deliveryType = document.querySelector('.delivery-type-btn.bg-[#F5F1EB]')?.id.replace('delivery-', '') || 'home';
-            
-            // Store checkout data
-            const checkoutData = {
-                deliveryType: deliveryType,
-                ...Object.fromEntries(formData)
-            };
-            localStorage.setItem('checkoutData', JSON.stringify(checkoutData));
-            
-            // Redirect to payment
-            window.location.href = '/payment';
+            return false;
+        }
+        
+        // Check if delivery type is selected
+        // Use querySelectorAll and check for the class manually since brackets in class names need escaping
+        const deliveryTypeButtons = document.querySelectorAll('.delivery-type-btn');
+        let selectedDeliveryType = null;
+        deliveryTypeButtons.forEach(btn => {
+            if (btn.classList.contains('bg-[#F5F1EB]')) {
+                selectedDeliveryType = btn;
+            }
         });
+        
+        if (!selectedDeliveryType) {
+            if (typeof showToast === 'function') {
+                showToast('Please select a delivery type', 'error');
+            } else {
+                alert('Please select a delivery type');
+            }
+            return false;
+        }
+        
+        // Validate form fields
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+        let firstInvalidField = null;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                if (!firstInvalidField) firstInvalidField = field;
+                field.classList.add('border-red-500');
+            } else {
+                field.classList.remove('border-red-500');
+            }
+        });
+        
+        // Validate phone number
+        const phoneField = form.querySelector('[name="phone"]');
+        if (phoneField && phoneField.value) {
+            const phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phoneField.value)) {
+                isValid = false;
+                if (!firstInvalidField) firstInvalidField = phoneField;
+                phoneField.classList.add('border-red-500');
+                if (typeof showToast === 'function') {
+                    showToast('Please enter a valid 10-digit phone number', 'error');
+                }
+            }
+        }
+        
+        // Validate pincode
+        const pincodeField = form.querySelector('[name="pincode"]');
+        if (pincodeField && pincodeField.value) {
+            const pincodePattern = /^[0-9]{6}$/;
+            if (!pincodePattern.test(pincodeField.value)) {
+                isValid = false;
+                if (!firstInvalidField) firstInvalidField = pincodeField;
+                pincodeField.classList.add('border-red-500');
+                if (typeof showToast === 'function') {
+                    showToast('Please enter a valid 6-digit pincode', 'error');
+                }
+            }
+        }
+        
+        // Validate email
+        const emailField = form.querySelector('[name="email"]');
+        if (emailField && emailField.value) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(emailField.value)) {
+                isValid = false;
+                if (!firstInvalidField) firstInvalidField = emailField;
+                emailField.classList.add('border-red-500');
+                if (typeof showToast === 'function') {
+                    showToast('Please enter a valid email address', 'error');
+                }
+            }
+        }
+        
+        if (!isValid) {
+            if (firstInvalidField) {
+                firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstInvalidField.focus();
+            }
+            if (typeof showToast === 'function') {
+                showToast('Please fill all required fields correctly', 'error');
+            }
+            return false;
+        }
+        
+        // Native form validation
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return false;
+        }
+        
+        const formData = new FormData(form);
+        const deliveryType = selectedDeliveryType ? selectedDeliveryType.id.replace('delivery-', '') : 'home';
+        
+        // Store checkout data
+        const checkoutData = {
+            deliveryType: deliveryType,
+            ...Object.fromEntries(formData)
+        };
+        localStorage.setItem('checkoutData', JSON.stringify(checkoutData));
+        
+        // Show loading state
+        const submitBtn = document.getElementById('continue-payment-btn') || form.querySelector('button[type="submit"]');
+        const continueText = document.getElementById('continue-payment-text');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            if (continueText) {
+                continueText.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...</span>';
+            } else {
+                submitBtn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...</span>';
+            }
+        }
+        
+        // Redirect to payment - use multiple methods to ensure it works
+        setTimeout(function() {
+            console.log('Redirecting to payment page...');
+            if (window.location.pathname !== '/payment') {
+                window.location.href = '/payment';
+            }
+        }, 500);
+        
+        return false;
     }
     
-    // Set default delivery type
+    // Make function globally accessible first
+    window.handleCheckoutSubmit = handleCheckoutSubmit;
+    
+        // Handle form submission
+        if (form) {
+            // Handle submit button click
+            const submitBtn = document.getElementById('continue-payment-btn') || form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Continue payment button clicked');
+                    handleCheckoutSubmit();
+                }, false);
+            }
+            
+            // Also handle form submit event
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Form submitted');
+                handleCheckoutSubmit();
+            }, false);
+        }
+    
+    // Set default delivery type and load address (without toast)
     selectDeliveryType('home');
+    loadAddressForDeliveryType('home', false);
     
     // Set default delivery date (2 days from today)
     const deliveryDateInput = document.getElementById('delivery-date');
@@ -109,6 +250,44 @@ function selectDeliveryType(type) {
         selectedBtn.classList.add('bg-[#F5F1EB]', 'border-[#8B4513]');
         selectedBtn.classList.remove('border-gray-200');
     }
+    
+    // Load address for selected type (with toast when user manually selects)
+    loadAddressForDeliveryType(type, true);
+}
+
+function loadAddressForDeliveryType(type, showToastMessage = false) {
+    const addresses = JSON.parse(localStorage.getItem('addresses') || '[]');
+    const address = addresses.find(addr => addr.type === type);
+    const form = document.getElementById('checkout-form');
+    
+    if (!form) return;
+    
+    if (address) {
+        // Auto-fill form with address
+        const nameParts = (address.name || '').split(' ');
+        form.querySelector('[name="first_name"]').value = nameParts[0] || '';
+        form.querySelector('[name="last_name"]').value = nameParts.slice(1).join(' ') || '';
+        form.querySelector('[name="phone"]').value = address.phone || '';
+        form.querySelector('[name="address"]').value = address.address1 + (address.address2 ? ', ' + address.address2 : '');
+        form.querySelector('[name="city"]').value = address.city || '';
+        form.querySelector('[name="state"]').value = address.state || '';
+        form.querySelector('[name="pincode"]').value = address.pincode || '';
+        
+        // Only show toast if explicitly requested (when user manually selects)
+        if (showToastMessage && typeof showToast === 'function') {
+            showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} address loaded`, 'success');
+        }
+    } else {
+        // Clear form if no address found
+        if (type === 'office' || type === 'other') {
+            // Only clear if office/other and no address exists
+            form.querySelector('[name="phone"]').value = '';
+            form.querySelector('[name="address"]').value = '';
+            form.querySelector('[name="city"]').value = '';
+            form.querySelector('[name="state"]').value = '';
+            form.querySelector('[name="pincode"]').value = '';
+        }
+    }
 }
 
 function loadCartItems() {
@@ -144,12 +323,43 @@ function loadCartItems() {
     }
     
     const couponDiscount = parseFloat(localStorage.getItem('couponDiscount') || '0');
+    const appliedCoupon = localStorage.getItem('appliedCoupon');
     const giftCard = JSON.parse(localStorage.getItem('selectedGiftCard') || 'null');
     const giftCardDiscount = giftCard ? Math.min(giftCard.balance, subtotal) : 0;
     const finalTotal = subtotal - couponDiscount - giftCardDiscount;
     
     if (subtotalEl) subtotalEl.textContent = 'Rs. ' + subtotal.toLocaleString();
     if (totalEl) totalEl.textContent = 'Rs. ' + Math.max(0, finalTotal).toLocaleString();
+    
+    // Show coupon discount
+    const couponDiscountRow = document.getElementById('coupon-discount-row');
+    const couponDiscountAmount = document.getElementById('coupon-discount-amount');
+    const couponSavedText = document.getElementById('coupon-saved-text');
+    const originalTotalText = document.getElementById('original-total-text');
+    
+    if (couponDiscount > 0 && appliedCoupon) {
+        if (couponDiscountRow) couponDiscountRow.classList.remove('hidden');
+        if (couponDiscountAmount) couponDiscountAmount.textContent = '-Rs. ' + couponDiscount.toLocaleString();
+        if (couponSavedText) couponSavedText.textContent = 'You saved Rs. ' + couponDiscount.toLocaleString();
+        if (originalTotalText) {
+            originalTotalText.textContent = 'Rs. ' + subtotal.toLocaleString();
+            originalTotalText.classList.remove('hidden');
+        }
+    } else {
+        if (couponDiscountRow) couponDiscountRow.classList.add('hidden');
+        if (originalTotalText) originalTotalText.classList.add('hidden');
+    }
+    
+    // Show gift card discount
+    const giftCardDiscountRow = document.getElementById('gift-card-discount-row');
+    const giftCardDiscountAmount = document.getElementById('gift-card-discount-amount');
+    
+    if (giftCardDiscount > 0) {
+        if (giftCardDiscountRow) giftCardDiscountRow.classList.remove('hidden');
+        if (giftCardDiscountAmount) giftCardDiscountAmount.textContent = '-Rs. ' + giftCardDiscount.toLocaleString();
+    } else {
+        if (giftCardDiscountRow) giftCardDiscountRow.classList.add('hidden');
+    }
     
     // Show applied gift card if any
     if (giftCard) {

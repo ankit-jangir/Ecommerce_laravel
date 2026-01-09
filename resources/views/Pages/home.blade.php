@@ -4,13 +4,13 @@
 
 @section('content')
 
-    <section class="relative w-full h-[65vh] sm:h-[75vh] lg:h-[90vh] overflow-hidden">
+    <section class="hero-section relative w-full h-[60vh] sm:h-[70vh] md:h-[75vh] lg:h-[90vh] overflow-hidden">
 
         <!-- BACKGROUND IMAGE -->
-        <div class="absolute inset-0">
+        <div class="absolute inset-0 w-full h-full">
             <img src="{{ asset('images/banner_img1.webp') }}" alt="Winter Kurta Collection"
-                class="w-full h-full object-cover object-[center_30%]
-                    brightness-75">
+                class="hero-image w-full h-full object-cover brightness-75"
+                style="object-position: center center;">
 
             <!-- OVERLAY -->
             <div
@@ -22,31 +22,31 @@
 
         <!-- CONTENT -->
         <div class="relative z-10 h-full flex items-center">
-            <div class="px-4 sm:px-8 lg:px-16 max-w-4xl">
+            <div class="px-4 sm:px-6 md:px-8 lg:px-16 max-w-4xl w-full">
 
                 <h1
                     class="text-white font-serif font-bold tracking-wide
                        leading-tight
-                       text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
+                       text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
                     WINTER STAPLES
                 </h1>
 
                 <p
-                    class="mt-3 sm:mt-4
-                       text-white/90
+                    class="mt-3 sm:mt-4 md:mt-5
+                       text-white/95
                        text-sm sm:text-base md:text-lg lg:text-xl
-                       max-w-xl">
+                       max-w-xl font-medium">
                     Elegant kurtis for every occasion
                 </p>
 
                 <a href="{{ route('women') }}"
                     class="inline-block mt-6 sm:mt-8
-                      px-8 sm:px-10 py-3 sm:py-3.5
+                      px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-3.5
                       bg-white text-[#654321]
                       rounded-full font-semibold
-                      text-sm sm:text-base
-                      hover:bg-[#F5F1EB]
-                      transition">
+                      text-sm sm:text-base md:text-lg
+                      hover:bg-[#F5F1EB] hover:shadow-lg
+                      transition-all duration-300">
                     Shop Collection
                 </a>
 
@@ -155,7 +155,7 @@
             <h2
                 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif text-center mb-6 sm:mb-8 md:mb-12 text-[#654321]">
                 Lifestyle Collection</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
+            <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                 @foreach ($products['lifestyle'] ?? [] as $product)
                     <div class="group cursor-pointer block product-card relative">
                         <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
@@ -169,7 +169,7 @@
 
                                 <!-- Action Icons - Right Side -->
                                 <div
-                                    class="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                                    class="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 z-20">
                                     <button type="button" data-wishlist-id="{{ $product['id'] }}"
                                         class="w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30">
                                         <i class="fi fi-rr-heart text-sm"></i>
@@ -222,7 +222,7 @@
             <h2
                 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif text-center mb-6 sm:mb-8 md:mb-12 text-[#654321]">
                 Traditional Collection</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
+            <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                 @foreach ($products['traditional'] ?? [] as $product)
                     <div class="group cursor-pointer block product-card relative">
                         <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
@@ -236,7 +236,7 @@
 
                                 <!-- Action Icons - Right Side -->
                                 <div
-                                    class="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                                    class="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 z-20">
                                     <button type="button" data-wishlist-id="{{ $product['id'] }}"
                                         class="w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30">
                                         <i class="fi fi-rr-heart text-sm"></i>
@@ -290,7 +290,7 @@
             <h2
                 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif text-center mb-6 sm:mb-8 md:mb-12 text-[#654321]">
                 Premium Suits Collection</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
+            <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                 @foreach ($products['suits'] ?? [] as $product)
                     <div class="group cursor-pointer block product-card relative">
                         <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
@@ -304,7 +304,7 @@
 
                                 <!-- Action Icons - Right Side -->
                                 <div
-                                    class="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                                    class="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 z-20">
                                     <button type="button" data-wishlist-id="{{ $product['id'] }}"
                                         class="w-9 h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow hover:bg-[#654321] hover:text-white transition z-30">
                                         <i class="fi fi-rr-heart text-sm"></i>
@@ -683,7 +683,7 @@
 
                     <p class="text-xs sm:text-sm text-gray-700 max-w-[180px] sm:max-w-xs">
                         Return within 15 days of delivery.
-                        <a href="#" class="underline hover:text-[#654321]">See T&Cs</a>
+                        <a href="{{ route('terms') }}" class="underline hover:text-[#654321]">See T&Cs</a>
                     </p>
                 </div>
 
@@ -768,6 +768,64 @@
         object-fit: cover;
         object-position: center center;
         display: block;
+    }
+
+    /* Hero Section Responsive Fix */
+    .hero-section {
+        position: relative;
+    }
+    
+    .hero-section .hero-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    @media (max-width: 640px) {
+        .hero-section {
+            min-height: 60vh;
+            height: 60vh;
+        }
+        .hero-section .absolute.inset-0 {
+            width: 100%;
+            height: 100%;
+        }
+        .hero-section .hero-image {
+            object-position: center center;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    @media (min-width: 641px) and (max-width: 768px) {
+        .hero-section {
+            min-height: 70vh;
+            height: 70vh;
+        }
+        .hero-section .hero-image {
+            object-position: center center;
+        }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .hero-section {
+            min-height: 75vh;
+            height: 75vh;
+        }
+        .hero-section .hero-image {
+            object-position: center 30%;
+        }
+    }
+
+    @media (min-width: 1025px) {
+        .hero-section {
+            min-height: 90vh;
+            height: 90vh;
+        }
+        .hero-section .hero-image {
+            object-position: center 30%;
+        }
     }
 
     .scrollbar-hide {

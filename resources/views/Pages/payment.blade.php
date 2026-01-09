@@ -19,6 +19,25 @@
                         <p class="text-sm text-gray-600 mb-6">Choose your preferred payment option</p>
                         
                         <div class="space-y-4">
+                            <!-- Wallet Payment Option -->
+                            <label class="payment-method-card flex items-start gap-4 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#8B4513] transition-all" id="wallet-payment-card">
+                                <input type="radio" name="payment_method" value="account_wallet" class="mt-1" onchange="selectPaymentMethod('account_wallet')">
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center gap-3">
+                                            <i class="fi fi-rr-wallet text-2xl text-[#654321]"></i>
+                                            <span class="font-semibold text-[#654321]">My Wallet</span>
+                                        </div>
+                                        <span class="text-sm font-semibold text-[#8B4513]" id="wallet-balance-display">₹0</span>
+                                    </div>
+                                    <p class="text-sm text-gray-500">Use your wallet balance to pay</p>
+                                    <div id="wallet-payment-info" class="hidden mt-2 p-2 bg-blue-50 rounded text-xs text-blue-700">
+                                        <p id="wallet-used-amount"></p>
+                                        <p id="wallet-remaining-amount" class="mt-1"></p>
+                                    </div>
+                                </div>
+                            </label>
+                            
                             <label class="payment-method-card flex items-start gap-4 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#8B4513] transition-all">
                                 <input type="radio" name="payment_method" value="card" class="mt-1" onchange="selectPaymentMethod('card')">
                                 <div class="flex-1">
@@ -42,17 +61,6 @@
                             </label>
                             
                             <label class="payment-method-card flex items-start gap-4 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#8B4513] transition-all">
-                                <input type="radio" name="payment_method" value="wallet" class="mt-1" onchange="selectPaymentMethod('wallet')">
-                                <div class="flex-1">
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <i class="fi fi-rr-wallet text-2xl text-[#654321]"></i>
-                                        <span class="font-semibold text-[#654321]">Digital Wallet</span>
-                                    </div>
-                                    <p class="text-sm text-gray-500">Pay using Paytm, Amazon Pay, etc.</p>
-                                </div>
-                            </label>
-                            
-                            <label class="payment-method-card flex items-start gap-4 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[#8B4513] transition-all">
                                 <input type="radio" name="payment_method" value="cod" class="mt-1" onchange="selectPaymentMethod('cod')">
                                 <div class="flex-1">
                                     <div class="flex items-center gap-3 mb-2">
@@ -64,8 +72,8 @@
                             </label>
                         </div>
                         
-                        <button onclick="placeOrder()" class="w-full mt-6 px-6 py-4 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold text-lg">
-                            Place Order
+                        <button id="place-order-btn" onclick="placeOrder()" class="w-full mt-6 px-6 py-4 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold text-lg flex items-center justify-center gap-2">
+                            <span id="place-order-text">Place Order</span>
                         </button>
                     </div>
                 </div>
@@ -95,6 +103,10 @@
                                 <span class="text-gray-600">Subtotal</span>
                                 <span class="font-semibold text-[#654321]" id="subtotal">Rs. 0</span>
                             </div>
+                            <div class="flex justify-between hidden" id="wallet-discount-row">
+                                <span class="text-green-600">Wallet Used</span>
+                                <span class="font-semibold text-green-600" id="wallet-discount-amount">-Rs. 0</span>
+                            </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-600">Shipping</span>
                                 <span class="font-semibold text-green-600">Free</span>
@@ -106,6 +118,10 @@
                             <div class="flex justify-between pt-2 border-t border-gray-200">
                                 <span class="text-lg font-bold text-[#654321]">Total</span>
                                 <span class="text-lg font-bold text-[#8B4513]" id="total">Rs. 0</span>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-400 hidden" id="original-total-row">
+                                <span class="font-normal">Original Total</span>
+                                <span class="line-through" id="original-total">Rs. 0</span>
                             </div>
                         </div>
                     </div>

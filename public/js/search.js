@@ -84,6 +84,12 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
     function performSearch(query) {
+        // Hide categories when searching
+        const categoriesDiv = document.getElementById('search-categories');
+        if (categoriesDiv) {
+            categoriesDiv.classList.add('hidden');
+        }
+        
         const filtered = mockProducts.filter(product => 
             product.name.toLowerCase().includes(query.toLowerCase()) ||
             product.category.toLowerCase().includes(query.toLowerCase())
@@ -91,9 +97,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (filtered.length > 0) {
             // Show results in panel
-            resultsList.innerHTML = filtered.map(product => `
+            resultsList.innerHTML = filtered.map(product => {
+                const isInCart = window.cartManager && window.cartManager.cart.some(item => item.id === product.id);
+                return `
                 <div class="flex items-center gap-4 p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-                    <img src="${product.image}" alt="${product.name}" class="w-20 h-20 object-cover rounded-lg">
+                    <a href="/product/${product.id}">
+                        <img src="${product.image}" alt="${product.name}" class="w-20 h-20 object-cover rounded-lg cursor-pointer">
+                    </a>
                     <div class="flex-1 min-w-0">
                         <a href="/product/${product.id}" class="font-semibold text-[#654321] hover:text-[#8B4513] block truncate" title="${product.name}">${product.name.length > 25 ? product.name.substring(0, 25) + '...' : product.name}</a>
                         <p class="text-sm text-gray-500 truncate">${product.category}</p>
@@ -103,19 +113,65 @@ document.addEventListener('DOMContentLoaded', function() {
                             <p class="font-bold text-[#8B4513]">₹${product.price.toLocaleString()}</p>
                             ${product.originalPrice ? `<p class="text-sm text-gray-400 line-through">₹${product.originalPrice.toLocaleString()}</p>` : ''}
                         </div>
-                        <button onclick="addToCart('${product.id}')" class="px-4 py-2 bg-[#8B4513] text-white rounded-lg hover:bg-[#654321] transition-colors text-sm">
-                            Add to Cart
+                        <button onclick="addToCartFromSearch(event, '${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.image}')" 
+                            class="px-4 py-2 ${isInCart ? 'bg-green-600' : 'bg-[#8B4513]'} text-white rounded-lg hover:bg-[#654321] transition-colors text-sm">
+                            ${isInCart ? 'Added to Cart' : 'Add to Cart'}
                         </button>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
             searchResults.classList.remove('hidden');
             suggestionsDiv.classList.add('hidden');
         } else {
-            // No results - redirect to shop with query
-            window.location.href = `/shop?search=${encodeURIComponent(query)}`;
+            // Show no results message with Browse Shop button
+            resultsList.innerHTML = `
+                <div class="text-center py-12">
+                    <i class="fi fi-rr-search text-6xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500 text-lg mb-2">No products found</p>
+                    <p class="text-gray-400 text-sm mb-4">Try searching with different keywords</p>
+                    <button onclick="redirectToShop('${query}')" class="px-6 py-2 bg-[#8B4513] text-white rounded-lg hover:bg-[#654321] transition-colors">
+                        Browse Shop
+                    </button>
+                </div>
+            `;
+            searchResults.classList.remove('hidden');
+            suggestionsDiv.classList.add('hidden');
         }
     }
+    
+    function redirectToShop(query) {
+        window.location.href = `/shop?search=${encodeURIComponent(query)}`;
+    }
+    
+    function addToCartFromSearch(event, productId, productName, productPrice, productImage) {
+        if (window.cartManager) {
+            const product = {
+                id: productId,
+                name: productName,
+                price: productPrice,
+                image: productImage || '',
+                size: 'M',
+                quantity: 1
+            };
+            window.cartManager.addToCart(product);
+            // Update button state
+            const btn = event.target;
+            if (btn) {
+                btn.textContent = 'Added to Cart';
+                btn.classList.remove('bg-[#8B4513]');
+                btn.classList.add('bg-green-600');
+                setTimeout(() => {
+                    btn.textContent = 'Add to Cart';
+                    btn.classList.remove('bg-green-600');
+                    btn.classList.add('bg-[#8B4513]');
+                }, 2000);
+            }
+        }
+    }
+    
+    window.addToCartFromSearch = addToCartFromSearch;
+    window.redirectToShop = redirectToShop;
 
     if (searchInput) {
         let searchTimeout;
@@ -128,6 +184,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (query.length === 0) {
                 suggestionsDiv.classList.add('hidden');
                 searchResults.classList.add('hidden');
+                // Show categories when input is empty
+                const categoriesDiv = document.getElementById('search-categories');
+                if (categoriesDiv) {
+                    categoriesDiv.classList.remove('hidden');
+                }
                 return;
             }
 
@@ -143,8 +204,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     suggestionsList.innerHTML = filtered.slice(0, 5).map(product => `
                         <a href="/product/${product.id}" class="flex items-center gap-3 px-4 py-3 hover:bg-[#F5F1EB] transition-colors cursor-pointer">
                             <img src="${product.image}" alt="${product.name}" class="w-12 h-12 object-cover rounded-lg">
-                            <div class="flex-1">
-                                <p class="font-medium text-[#654321]">${product.name}</p>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-medium text-[#654321] truncate" title="${product.name}">${product.name.length > 25 ? product.name.substring(0, 25) + '...' : product.name}</p>
                                 <p class="text-sm text-gray-500">${product.category}</p>
                             </div>
                             <p class="font-semibold text-[#8B4513]">₹${product.price.toLocaleString()}</p>
@@ -152,7 +213,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     `).join('');
                     suggestionsDiv.classList.remove('hidden');
                 } else {
-                    suggestionsDiv.classList.add('hidden');
+                    // Show no results in suggestions with Browse Shop button
+                    suggestionsList.innerHTML = `
+                        <div class="px-4 py-3 text-center">
+                            <p class="text-gray-500 mb-3">No products found</p>
+                            <button onclick="redirectToShop('${query}')" class="w-full px-4 py-2 bg-[#8B4513] text-white rounded-lg hover:bg-[#654321] transition-colors text-sm">
+                                Browse Shop
+                            </button>
+                        </div>
+                    `;
+                    suggestionsDiv.classList.remove('hidden');
                 }
             }, 300);
         });
@@ -164,6 +234,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const query = e.target.value.trim();
                 if (query.length > 0) {
                     performSearch(query);
+                } else {
+                    // If empty, redirect to shop
+                    window.location.href = '/shop';
                 }
             }
         });
@@ -176,6 +249,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const query = searchInput?.value.trim() || '';
             if (query.length > 0) {
                 performSearch(query);
+                // If no results, redirect to shop with query
+                setTimeout(() => {
+                    const resultsList = document.getElementById('search-results-list');
+                    if (resultsList && resultsList.innerHTML.includes('No products found')) {
+                        redirectToShop(query);
+                    }
+                }, 100);
+            } else {
+                // If empty, redirect to shop
+                window.location.href = '/shop';
             }
         });
     }

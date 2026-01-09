@@ -18,13 +18,16 @@
                     <h1 class="text-2xl sm:text-3xl font-serif font-bold text-[#654321] mb-6">My Profile</h1>
                     
                     <!-- Tabs -->
-                    <div class="bg-white rounded-xl shadow-lg mb-6">
+                    <div class="bg-white rounded-xl shadow-lg mb-6 overflow-hidden">
                         <div class="flex border-b border-gray-200">
-                            <button onclick="switchTab('profile')" id="tab-profile" class="flex-1 px-6 py-4 font-semibold text-[#654321] border-b-2 border-[#8B4513] bg-[#F5F1EB]">
+                            <button onclick="switchTab('profile')" id="tab-profile" class="flex-1 px-2 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm md:text-base font-semibold text-[#654321] border-b-2 border-[#8B4513] bg-[#F5F1EB] transition-all">
                                 Profile
                             </button>
-                            <button onclick="switchTab('edit')" id="tab-edit" class="flex-1 px-6 py-4 font-semibold text-gray-500 hover:text-[#654321] transition-colors">
+                            <button onclick="switchTab('edit')" id="tab-edit" class="flex-1 px-2 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm md:text-base font-semibold text-gray-500 hover:text-[#654321] transition-all">
                                 Edit Profile
+                            </button>
+                            <button onclick="switchTab('wallet')" id="tab-wallet" class="flex-1 px-2 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 text-xs sm:text-sm md:text-base font-semibold text-gray-500 hover:text-[#654321] transition-all">
+                                Wallet
                             </button>
                         </div>
                     </div>
@@ -91,10 +94,92 @@
                             </form>
                         </div>
                     </div>
+                    
+                    <!-- Wallet Tab Content -->
+                    <div id="wallet-tab-content" class="hidden space-y-6">
+                        <!-- Wallet Balance Card -->
+                        <div class="bg-gradient-to-r from-[#8B4513] to-[#654321] rounded-xl shadow-lg p-6 text-white">
+                            <p class="text-sm mb-2 opacity-90">Wallet Balance</p>
+                            <p class="text-4xl font-bold mb-1" id="wallet-balance">₹0</p>
+                            <p class="text-sm opacity-80">Available for use</p>
+                        </div>
+                        
+                        <!-- Add Money Section -->
+                        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+                            <h2 class="text-xl font-serif font-bold text-[#654321] mb-4">Add Money</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-[#654321] mb-2">Amount</label>
+                                    <input type="number" id="wallet-amount" placeholder="Enter amount" min="100" step="100"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] outline-none text-[#654321]">
+                                    <p class="text-xs text-gray-500 mt-1">Minimum amount: ₹100</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-[#654321] mb-3">Payment Method</label>
+                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                        <button onclick="selectPaymentMethod('upi')" id="payment-upi" class="payment-method-btn p-4 border-2 border-gray-200 rounded-lg hover:border-[#8B4513] transition-all text-center">
+                                            <i class="fi fi-rr-credit-card text-2xl text-[#654321] mb-2"></i>
+                                            <p class="text-sm font-semibold text-[#654321]">UPI</p>
+                                        </button>
+                                        <button onclick="selectPaymentMethod('qr')" id="payment-qr" class="payment-method-btn p-4 border-2 border-gray-200 rounded-lg hover:border-[#8B4513] transition-all text-center">
+                                            <i class="fi fi-rr-qrcode text-2xl text-[#654321] mb-2"></i>
+                                            <p class="text-sm font-semibold text-[#654321]">QR Code</p>
+                                        </button>
+                                        <button onclick="selectPaymentMethod('card')" id="payment-card" class="payment-method-btn p-4 border-2 border-gray-200 rounded-lg hover:border-[#8B4513] transition-all text-center">
+                                            <i class="fi fi-rr-credit-card text-2xl text-[#654321] mb-2"></i>
+                                            <p class="text-sm font-semibold text-[#654321]">Card</p>
+                                        </button>
+                                        <button onclick="selectPaymentMethod('netbanking')" id="payment-netbanking" class="payment-method-btn p-4 border-2 border-gray-200 rounded-lg hover:border-[#8B4513] transition-all text-center">
+                                            <i class="fi fi-rr-bank text-2xl text-[#654321] mb-2"></i>
+                                            <p class="text-sm font-semibold text-[#654321]">Net Banking</p>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button onclick="processWalletPayment()" id="add-money-btn" disabled
+                                    class="w-full bg-[#8B4513] text-white py-3 rounded-lg font-semibold hover:bg-[#654321] transition-all disabled:bg-gray-400 disabled:cursor-not-allowed">
+                                    Add Money
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Transaction History -->
+                        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+                            <h2 class="text-xl font-serif font-bold text-[#654321] mb-4">Transaction History</h2>
+                            <div id="wallet-transactions" class="space-y-3">
+                                <!-- Transactions will be populated here -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+    <!-- QR Code Modal -->
+    <div id="qr-code-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 text-center">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-serif font-bold text-[#654321]">Scan QR Code</h3>
+                <button onclick="closeQRModal()" class="text-gray-400 hover:text-[#8B4513] transition-colors">
+                    <i class="fi fi-rr-cross text-xl"></i>
+                </button>
+            </div>
+            <div class="bg-white p-4 rounded-lg mb-4 flex justify-center">
+                <img id="qr-code-image" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=UPI_PAYMENT" alt="QR Code" class="w-64 h-64">
+            </div>
+            <p class="text-sm text-gray-600 mb-2">Amount: <span id="qr-amount" class="font-semibold text-[#654321]">₹0</span></p>
+            <p class="text-xs text-gray-500 mb-4">Scan this QR code with any UPI app to complete payment</p>
+            <div class="flex gap-3">
+                <button onclick="closeQRModal()" class="flex-1 px-4 py-2 border border-gray-300 text-[#654321] rounded-lg hover:bg-gray-50 transition-colors">
+                    Cancel
+                </button>
+                <button onclick="confirmQRPayment()" class="flex-1 px-4 py-2 bg-[#8B4513] text-white rounded-lg hover:bg-[#654321] transition-colors">
+                    Payment Done
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <script src="{{ asset('js/useraccount-sidebar.js') }}"></script>
     <script src="{{ asset('js/account.js') }}"></script>
+    <script src="{{ asset('js/account-wallet.js') }}"></script>
 @endsection

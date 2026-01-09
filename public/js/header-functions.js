@@ -88,6 +88,90 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
     
+    // Mobile Menu Submenu Toggle - Close all by default, user can open
+    // First, close all submenus on page load
+    document.querySelectorAll('.mobile-menu-submenu').forEach(submenu => {
+        submenu.classList.add('hidden');
+    });
+    
+    // Then set up toggle functionality
+    document.querySelectorAll('.mobile-submenu-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const menuItem = this.closest('.mobile-menu-item');
+            const submenu = menuItem.querySelector('.mobile-menu-submenu');
+            const icon = this.querySelector('i');
+            
+            if (submenu) {
+                const isHidden = submenu.classList.contains('hidden');
+                
+                if (isHidden) {
+                    submenu.classList.remove('hidden');
+                    icon.classList.remove('fi-rr-angle-small-down');
+                    icon.classList.add('fi-rr-angle-small-up');
+                } else {
+                    submenu.classList.add('hidden');
+                    icon.classList.remove('fi-rr-angle-small-up');
+                    icon.classList.add('fi-rr-angle-small-down');
+                }
+            }
+        });
+    });
+    
+    // Nested Submenu Toggle (for Kurtis under Women)
+    document.querySelectorAll('.mobile-submenu-toggle-nested').forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const menuItem = this.closest('.mobile-menu-item-nested');
+            const submenu = menuItem.querySelector('.mobile-menu-submenu-nested');
+            const icon = this.querySelector('i');
+            
+            if (submenu) {
+                const isHidden = submenu.classList.contains('hidden');
+                
+                if (isHidden) {
+                    submenu.classList.remove('hidden');
+                    icon.classList.remove('fi-rr-angle-small-down');
+                    icon.classList.add('fi-rr-angle-small-up');
+                } else {
+                    submenu.classList.add('hidden');
+                    icon.classList.remove('fi-rr-angle-small-up');
+                    icon.classList.add('fi-rr-angle-small-down');
+                }
+            }
+        });
+    });
+    
+    // Nested Submenu Toggle (for Kurtis under Women, etc.)
+    document.querySelectorAll('.mobile-submenu-toggle-nested').forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const menuItem = this.closest('.mobile-menu-item-nested');
+            const submenu = menuItem.querySelector('.mobile-menu-submenu-nested');
+            const icon = this.querySelector('i');
+            
+            if (submenu) {
+                const isHidden = submenu.classList.contains('hidden');
+                
+                if (isHidden) {
+                    submenu.classList.remove('hidden');
+                    icon.classList.remove('fi-rr-angle-small-down');
+                    icon.classList.add('fi-rr-angle-small-up');
+                } else {
+                    submenu.classList.add('hidden');
+                    icon.classList.remove('fi-rr-angle-small-up');
+                    icon.classList.add('fi-rr-angle-small-down');
+                }
+            }
+        });
+    });
+    
     // ESC key close all
     document.onkeydown = (e) => {
         if (e.key === 'Escape') {

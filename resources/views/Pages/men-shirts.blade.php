@@ -1,278 +1,285 @@
 @extends('layouts.app')
 
-@section('title', 'Men Collection - AURA')
+@section('title', 'Men Shirts - AURA KURTIS')
 
 @section('content')
 
 @php
-$products = [
-[
-'id'=>1,'title'=>'Classic White Shirt','category'=>'Shirts','price'=>2499,'old'=>3499,
-'image'=>'https://images.unsplash.com/photo-1603252109303-2751441dd157'
-],
-[
-'id'=>2,'title'=>'Denim Casual Shirt','category'=>'Shirts','price'=>2799,'old'=>3699,
-'image'=>'https://images.unsplash.com/photo-1598032895397-b9472444bf93'
-],
-[
-'id'=>3,'title'=>'Black Slim T-Shirt','category'=>'T-Shirts','price'=>1599,'old'=>2299,
-'image'=>'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633'
-],
-[
-'id'=>4,'title'=>'Olive Green Tee','category'=>'T-Shirts','price'=>1699,'old'=>2399,
-'image'=>'https://images.unsplash.com/photo-1620799139834-6b8f844fbe61'
-],
-[
-'id'=>5,'title'=>'Navy Formal Pants','category'=>'Pants','price'=>3199,'old'=>3999,
-'image'=>'https://images.unsplash.com/photo-1603252109612-24fa03d145c8'
-],
-[
-'id'=>6,'title'=>'Beige Casual Pants','category'=>'Pants','price'=>2999,'old'=>3799,
-'image'=>'https://images.unsplash.com/photo-1618354691551-44de113f0164'
-],
-];
+// Get products from MockData - specifically men shirts
+$allProducts = \App\Helpers\MockData::getHomepageProducts();
+$shirtProducts = $allProducts['men_shirts'] ?? [];
+$bestsellers = $allProducts['bestsellers'] ?? [];
+
+// If no specific shirts, use all products and filter
+if (empty($shirtProducts)) {
+    $shirtProducts = collect($allProducts)->flatten(1)->toArray();
+}
+
+// Add hover images and assign to shirts
+$productsWithHover = [];
+foreach ($shirtProducts as $index => $product) {
+    $nextIndex = ($index + 1) % count($shirtProducts);
+    $product['hover_image'] = $shirtProducts[$nextIndex]['image'] ?? $product['image'];
+    $product['color'] = ['Red', 'Blue', 'Black', 'Pink', 'Green', 'Yellow', 'White', 'Orange', 'Navy', 'Gray'][$index % 10] ?? 'Red';
+    $product['size'] = ['S', 'M', 'L', 'XL', 'XXL'][$index % 5] ?? 'M';
+    $product['category'] = 'Shirts';
+    $product['subcategory'] = 'Shirts';
+    $productsWithHover[] = $product;
+}
+$products = $productsWithHover;
 @endphp
 
-<!-- ================= HERO ================= -->
-<section class="relative h-[520px] overflow-hidden">
+<!-- ================= HERO SECTION ================= -->
+<section class="relative h-[300px] sm:h-[400px] lg:h-[500px] overflow-hidden">
     <img src="https://images.unsplash.com/photo-1516826957135-700dedea698c?q=80&w=1920"
         class="absolute inset-0 w-full h-full object-cover">
     <div class="absolute inset-0 bg-black/60"></div>
 
-    <div class="relative container mx-auto px-6 h-full flex items-center">
-        <div class="text-white max-w-xl">
-            <span class="px-4 py-1 text-xs bg-white/20 rounded-full">MEN'S Ethentic Wear</span>
-            <h1 class="text-5xl font-light mt-4">Timeless <span class="font-semibold">Shirts Collection</span></h1>
-            <p class="mt-4 text-gray-200">Discover Premium Men's Shirts Collection modern lifestyle</p>
+    <div class="relative container mx-auto px-4 sm:px-6 h-full flex items-center justify-center text-center">
+        <div class="text-white max-w-3xl">
+            <span class="inline-block mb-4 px-4 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm tracking-widest bg-white/20 rounded-full">
+                MEN FASHION
+            </span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+                Men Shirts
+            </h1>
+            <p class="mt-4 text-sm sm:text-base text-gray-200 max-w-2xl mx-auto">
+                Discover premium shirts crafted for modern men
+            </p>
         </div>
     </div>
 </section>
 
-<!-- ================= FILTER BAR ================= -->
-<section class="sticky top-0 bg-white border-b z-40">
-    <div class="container mx-auto px-6 py-4 flex flex-wrap gap-4 justify-between items-center">
-
-        <div class="flex gap-3">
-            <button onclick="filterProducts('All')" class="tab-btn active">All</button>
-            <button onclick="filterProducts('Shirts')" class="tab-btn">Festive</button>
-            <button onclick="filterProducts('T-Shirts')" class="tab-btn">Casual</button>
-            <button onclick="filterProducts('Pants')" class="tab-btn">Wedding</button>
-        </div>
-
-        <select onchange="sortProducts(this.value)" class="px-5 py-2 border rounded-full text-sm">
-            <option value="featured">Sort: Featured</option>
-            <option value="low">Price: Low to High</option>
-            <option value="high">Price: High to Low</option>
-        </select>
-    </div>
-</section>
-
-<!-- ================= PRODUCTS ================= -->
-<section class="py-20 bg-gray-50">
-    <div class="container mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10" id="productGrid">
-
-        @foreach($products as $p)
-        <div class="product-card bg-white rounded-2xl overflow-hidden shadow hover:shadow-xl transition"
-            data-category="{{ $p['category'] }}" data-price="{{ $p['price'] }}">
-
-            <div class="relative overflow-hidden group">
-                <img src="{{ $p['image'] }}"
-                    class="w-full h-[420px] object-cover group-hover:scale-110 transition duration-700">
-
-                <!-- Actions -->
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 opacity-0 group-hover:opacity-100">
-
-                    <!-- Heart -->
-                    <button onclick="toggleHeart(this)"
-                        class="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
-                        <svg class="w-5 h-5 heart-icon text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
-                            viewBox="0 0 24 24">
-                            <path
-                                d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l7.8-7.6a5.5 5.5 0 0 0 0-7.8z" />
-                        </svg>
-                    </button>
-
-                    <!-- View -->
-                    <a href="#" class="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
-                        <i class="fi fi-rr-eye"></i>
-                    </a>
-
-                    <!-- Cart -->
-                    <button onclick="openCartModal(
-    '{{ $p['title'] }}',
-    '{{ $p['price'] }}',
-    '{{ $p['old'] }}',
-    '{{ $p['image'] }}'
-)" class="w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
-                        <i class="fi fi-rr-shopping-bag"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="p-5">
-                <p class="text-xs uppercase text-gray-500">{{ $p['category'] }}</p>
-                <h3 class="text-sm font-medium mt-1">{{ $p['title'] }}</h3>
-
-                <div class="flex gap-2 mt-3">
-                    <span class="font-semibold">₹{{ $p['price'] }}</span>
-                    <span class="text-xs line-through text-gray-400">₹{{ $p['old'] }}</span>
-                </div>
-            </div>
-        </div>
-        @endforeach
-    </div>
-</section>
-
-<!-- ================= ADVANCED CART MODAL ================= -->
-<div id="cartModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-
-    <div class="bg-white rounded-2xl w-[420px] p-6 relative">
-
-        <!-- Close -->
-        <button onclick="closeCartModal()" class="absolute top-3 right-4 text-xl font-bold">&times;</button>
-
-        <!-- Product -->
-        <div class="flex gap-4">
-            <img id="cartImage" class="w-24 h-32 rounded-lg object-cover">
-
+<!-- ================= MAIN ================= -->
+<section class="py-8 sm:py-12 lg:py-16 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header with Sort (No Filters) -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
             <div>
-                <h3 id="cartTitle" class="font-semibold text-lg"></h3>
-
-                <div class="flex gap-2 mt-1">
-                    <span id="cartPrice" class="text-red-500 font-semibold"></span>
-                    <span id="cartOld" class="line-through text-gray-400 text-sm"></span>
-                </div>
-
-                <!-- Quantity -->
-                <div class="flex items-center gap-3 mt-4">
-                    <button onclick="changeQty(-1)" class="w-8 h-8 rounded-full bg-gray-200">−</button>
-
-                    <span id="cartQty">1</span>
-
-                    <button onclick="changeQty(1)" class="w-8 h-8 rounded-full bg-gray-200">+</button>
-                </div>
+                <p class="text-sm sm:text-base text-gray-600">Showing <span class="font-semibold text-black" id="product-count">{{ count($products) }}</span> products</p>
+            </div>
+            <div>
+                <select id="sort-select" class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] outline-none">
+                    <option value="popularity">Sort by Popularity</option>
+                    <option value="price_low">Price: Low to High</option>
+                    <option value="price_high">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                </select>
             </div>
         </div>
 
-        <!-- Size -->
-        <div class="mt-6">
-            <p class="text-sm font-medium mb-2">Select Size</p>
-            <div class="flex gap-3">
-                <button class="size-btn" onclick="selectSize(this)">M</button>
-                <button class="size-btn" onclick="selectSize(this)">L</button>
-                <button class="size-btn" onclick="selectSize(this)">XL</button>
-                <button class="size-btn" onclick="selectSize(this)">XXL</button>
+        <!-- Products Grid - Responsive: Phone 2, Tablet 2-3, Desktop 3 -->
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6" id="products-grid">
+        
+        <!-- No Products Message -->
+        <div id="no-products-message" class="col-span-full hidden">
+            <div class="flex flex-col items-center justify-center py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-gray-50 to-white rounded-xl border border-gray-200">
+                <div class="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 mb-4 sm:mb-6">
+                    <svg class="w-full h-full text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-black mb-2 sm:mb-3">No Products Found</h3>
+                <p class="text-xs sm:text-sm text-gray-600 text-center max-w-sm mb-4 sm:mb-6 px-4">
+                    We couldn't find any products matching your criteria.
+                </p>
             </div>
         </div>
+            @foreach($products as $product)
+            <div class="group cursor-pointer block product-card relative filterable-product" 
+                 data-category="{{ $product['category'] ?? '' }}"
+                 data-color="{{ $product['color'] ?? '' }}"
+                 data-size="{{ $product['size'] ?? '' }}"
+                 data-price="{{ $product['price'] }}"
+                 data-name="{{ $product['name'] }}"
+                 data-id="{{ $product['id'] }}"
+                 data-image="{{ $product['image'] }}"
+                 data-hover-image="{{ $product['hover_image'] ?? $product['image'] }}"
+                 data-badge="{{ $product['badge'] ?? '' }}"
+                 data-badge-color="{{ $product['badge_color'] ?? '' }}"
+                 data-description="{{ $product['description'] ?? '' }}"
+                 data-original-price="{{ $product['original_price'] ?? '' }}">
+                <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
+                    <div class="relative overflow-hidden mb-2 sm:mb-3 md:mb-4 rounded-lg bg-white">
+                        <div class="relative w-full aspect-square overflow-hidden">
+                            <!-- Default Image -->
+                            <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
+                                class="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 group-hover:opacity-0">
+                            <!-- Hover Image -->
+                            <img src="{{ $product['hover_image'] ?? $product['image'] }}" alt="{{ $product['name'] }}"
+                                class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                        </div>
 
-        <!-- Add To Cart -->
-        <button class="mt-6 w-full bg-black text-white py-3 rounded-full font-medium">
-            Add To Cart
-        </button>
+                        @if(isset($product['badge']) && $product['badge'])
+                            <span class="absolute top-2 left-2 sm:top-3 sm:left-3 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold {{ $product['badge_color'] === 'red' ? 'bg-red-500' : ($product['badge_color'] === 'yellow' ? 'bg-yellow-500' : ($product['badge_color'] === 'green' ? 'bg-green-500' : ($product['badge_color'] === 'purple' ? 'bg-purple-500' : ($product['badge_color'] === 'pink' ? 'bg-pink-500' : ($product['badge_color'] === 'blue' ? 'bg-blue-500' : ($product['badge_color'] === 'orange' ? 'bg-orange-500' : 'bg-gray-500')))))) }}">
+                                {{ $product['badge'] }}
+                            </span>
+                        @endif
+
+                        <!-- Action Icons - Right Side -->
+                        <div class="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 z-20">
+                            <button type="button" 
+                                data-wishlist-id="{{ $product['id'] }}"
+                                class="wishlist-btn w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow-md hover:bg-[#654321] hover:text-white transition z-30">
+                                <i class="fi fi-rr-heart text-xs sm:text-sm"></i>
+                            </button>
+                            <a href="{{ route('product.detail', ['id' => $product['id']]) }}"
+                                class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow-md hover:bg-[#654321] hover:text-white transition z-30">
+                                <i class="fi fi-rr-eye text-xs sm:text-sm"></i>
+                            </a>
+                            <button type="button"
+                                class="action-cart w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow-md hover:bg-[#654321] hover:text-white transition z-30"
+                                data-product-id="{{ $product['id'] }}" 
+                                data-product-name="{{ $product['name'] }}"
+                                data-product-price="{{ $product['price'] }}"
+                                data-product-image="{{ $product['image'] }}">
+                                <i class="fi fi-rr-shopping-bag text-xs sm:text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                
+                <div class="px-1">
+                    <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
+                        <h3 class="text-sm sm:text-base font-medium text-black mb-1 sm:mb-2 line-clamp-2 hover:text-[#8B4513] transition-colors">
+                            {{ $product['name'] }}
+                        </h3>
+                    </a>
+                    @if(isset($product['description']))
+                        <p class="text-xs text-gray-500 mb-1 line-clamp-1">{{ $product['description'] }}</p>
+                    @endif
+                    <p class="text-sm sm:text-base text-[#8B4513] font-semibold">
+                        ₹{{ number_format($product['price']) }}
+                        @if(isset($product['original_price']) && $product['original_price'])
+                            <span class="text-xs text-gray-400 line-through ml-2">₹{{ number_format($product['original_price']) }}</span>
+                        @endif
+                    </p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination-container" class="flex justify-center items-center gap-2 mt-6 sm:mt-8 lg:mt-12 flex-wrap"></div>
     </div>
-</div>
+</section>
 
+<!-- Our Bestsellers Carousel with Auto-Slide -->
+<x-product-carousel id="bestsellers" title="OUR BESTSELLERS" :products="$bestsellers" />
 
-<!-- ================= JS ================= -->
+@push('scripts')
 <script>
-function toggleHeart(btn) {
-    const icon = btn.querySelector('.heart-icon');
-    icon.classList.toggle('text-pink-500');
-    icon.classList.toggle('fill-pink-500');
-}
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all products
+    const allProducts = Array.from(document.querySelectorAll('.filterable-product'));
+    let currentPage = 1;
+    const productsPerPage = 12;
 
-function openCartModal(title, price) {
-    document.getElementById('cartText').innerText = title + ' - ₹' + price;
-    document.getElementById('cartModal').classList.remove('hidden');
-    document.getElementById('cartModal').classList.add('flex');
-}
+    // Display products with pagination
+    function displayProducts(visibleProducts) {
+        const start = (currentPage - 1) * productsPerPage;
+        const end = start + productsPerPage;
+        const pageProducts = visibleProducts.slice(start, end);
 
-function closeCartModal() {
-    document.getElementById('cartModal').classList.add('hidden');
-}
+        allProducts.forEach(product => product.style.display = 'none');
+        pageProducts.forEach(product => product.style.display = 'block');
+    }
 
-function filterProducts(cat) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
+    // Update pagination
+    function updatePagination(visibleProducts) {
+        const totalPages = Math.ceil(visibleProducts.length / productsPerPage);
+        const paginationContainer = document.getElementById('pagination-container');
+        
+        if (!paginationContainer) return;
+        
+        if (visibleProducts.length <= productsPerPage || totalPages <= 1) {
+            paginationContainer.innerHTML = '';
+            return;
+        }
 
-    document.querySelectorAll('.product-card').forEach(card => {
-        card.style.display = (cat === 'All' || card.dataset.category === cat) ? 'block' : 'none';
-    });
-}
+        let paginationHTML = '';
+        if (currentPage > 1) {
+            paginationHTML += `<button onclick="changePage(${currentPage - 1})" class="px-2 py-1 sm:px-3 sm:py-1.5 border border-gray-300 rounded-lg text-[10px] sm:text-xs text-gray-700 hover:bg-[#F5F1EB] transition-colors">← Prev</button>`;
+        }
 
-function sortProducts(type) {
-    let grid = document.getElementById('productGrid');
-    let cards = Array.from(grid.children);
+        const maxVisiblePages = window.innerWidth < 640 ? 5 : 7;
+        const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+        
+        if (startPage > 1) {
+            paginationHTML += `<button onclick="changePage(1)" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-gray-300 text-[10px] sm:text-xs text-gray-700 hover:bg-[#F5F1EB] transition-colors">1</button>`;
+            if (startPage > 2) paginationHTML += `<span class="px-1 sm:px-2 text-gray-500 text-xs">...</span>`;
+        }
+        
+        for (let i = startPage; i <= endPage; i++) {
+            paginationHTML += `<button onclick="changePage(${i})" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-gray-300 text-[10px] sm:text-xs ${i === currentPage ? 'bg-[#8B4513] text-white border-[#8B4513]' : 'text-gray-700 hover:bg-[#F5F1EB]'} transition-colors">${i}</button>`;
+        }
+        
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) paginationHTML += `<span class="px-1 sm:px-2 text-gray-500 text-xs">...</span>`;
+            paginationHTML += `<button onclick="changePage(${totalPages})" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-gray-300 text-[10px] sm:text-xs text-gray-700 hover:bg-[#F5F1EB] transition-colors">${totalPages}</button>`;
+        }
 
-    cards.sort((a, b) => {
-        let p1 = parseInt(a.dataset.price);
-        let p2 = parseInt(b.dataset.price);
-        return type === 'low' ? p1 - p2 : type === 'high' ? p2 - p1 : 0;
-    });
+        if (currentPage < totalPages) {
+            paginationHTML += `<button onclick="changePage(${currentPage + 1})" class="px-2 py-1 sm:px-3 sm:py-1.5 border border-gray-300 rounded-lg text-[10px] sm:text-xs text-gray-700 hover:bg-[#F5F1EB] transition-colors">Next →</button>`;
+        }
 
-    cards.forEach(card => grid.appendChild(card));
-}
-let qty = 1;
-let selectedSize = '';
+        paginationContainer.innerHTML = paginationHTML;
+    }
 
-function openCartModal(title, price, old, image) {
-    qty = 1;
-    selectedSize = '';
+    window.changePage = function(page) {
+        currentPage = page;
+        displayProducts(allProducts);
+        updatePagination(allProducts);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
-    document.getElementById('cartTitle').innerText = title;
-    document.getElementById('cartPrice').innerText = '₹' + price;
-    document.getElementById('cartOld').innerText = '₹' + old;
-    document.getElementById('cartImage').src = image;
-    document.getElementById('cartQty').innerText = qty;
+    // Initialize - show all products
+    displayProducts(allProducts);
+    updatePagination(allProducts);
 
-    document.querySelectorAll('.size-btn')
-        .forEach(btn => btn.classList.remove('active'));
+    // Initialize cart and wishlist buttons
+    window.cartManager.initCartButtons();
+    window.wishlistManager.initWishlistButtons();
 
-    document.getElementById('cartModal').classList.remove('hidden');
-    document.getElementById('cartModal').classList.add('flex');
-}
+    // Sort functionality
+    const sortSelect = document.getElementById('sort-select');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            sortProducts(this.value);
+        });
+    }
 
-function closeCartModal() {
-    document.getElementById('cartModal').classList.add('hidden');
-}
-
-function changeQty(val) {
-    qty = Math.max(1, qty + val);
-    document.getElementById('cartQty').innerText = qty;
-}
-
-function selectSize(btn) {
-    document.querySelectorAll('.size-btn')
-        .forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    selectedSize = btn.innerText;
-}
+    function sortProducts(sortBy) {
+        const products = Array.from(document.querySelectorAll('.product-card'));
+        const grid = document.getElementById('products-grid');
+        
+        products.sort((a, b) => {
+            const priceA = parseInt(a.getAttribute('data-price'));
+            const priceB = parseInt(b.getAttribute('data-price'));
+            const nameA = a.getAttribute('data-name').toLowerCase();
+            const nameB = b.getAttribute('data-name').toLowerCase();
+            const idA = parseInt(a.getAttribute('data-id')) || 0;
+            const idB = parseInt(b.getAttribute('data-id')) || 0;
+            
+            switch(sortBy) {
+                case 'price_low':
+                    return priceA - priceB;
+                case 'price_high':
+                    return priceB - priceA;
+                case 'newest':
+                    return idB - idA;
+                default:
+                    return nameA.localeCompare(nameB);
+            }
+        });
+        
+        products.forEach(product => grid.appendChild(product));
+        displayProducts(allProducts);
+        updatePagination(allProducts);
+    }
+});
 </script>
-
-<style>
-.tab-btn {
-    padding: 8px 16px;
-    border-radius: 9999px;
-    font-size: 14px;
-    background: #f3f3f3;
-}
-
-.tab-btn.active {
-    background: black;
-    color: white;
-}
-
-.size-btn {
-    border: 1px solid #ddd;
-    padding: 8px 16px;
-    border-radius: 9999px;
-    font-size: 14px;
-}
-
-.size-btn.active {
-    background: black;
-    color: white;
-}
-</style>
+@endpush
 
 @endsection

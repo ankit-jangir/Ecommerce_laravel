@@ -50,6 +50,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn ? submitBtn.innerHTML : '';
+            
+            // Show loading state
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Signing In...</span>';
+            }
+            
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
 
@@ -64,12 +73,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 }));
                 
                 showToast('Login successful!', 'success');
+                
+                // Redirect to home page after toast (2 seconds delay)
                 setTimeout(() => {
-                    updateUserUI();
-                    window.location.href = window.location.origin + '/';
-                }, 1000);
+                    window.location.href = '/';
+                }, 2000);
             } else {
                 showToast('Invalid email or password', 'error');
+                // Reset button
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
             }
         });
     }
@@ -79,6 +94,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submitBtn = registerForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn ? submitBtn.innerHTML : '';
+            
+            // Show loading state
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Creating Account...</span>';
+            }
+            
             const name = document.getElementById('register-name').value;
             const surname = document.getElementById('register-surname').value;
             const email = document.getElementById('register-email').value;
@@ -87,6 +111,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (password !== passwordConfirm) {
                 showToast('Passwords do not match', 'error');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
                 return;
             }
 
@@ -96,11 +124,19 @@ document.addEventListener('DOMContentLoaded', function() {
             // Check if user exists (but allow fixed user email)
             if (email === 'user@gmail.com') {
                 showToast('This email is already registered', 'error');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
                 return;
             }
             
             if (users.find(u => u.email === email)) {
                 showToast('Email already registered', 'error');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
                 return;
             }
 
@@ -128,10 +164,11 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('isNewUser', 'true');
 
             showToast('Account created successfully! Welcome coupon available!', 'success');
+            
+            // Redirect to home page after toast (2 seconds delay)
             setTimeout(() => {
-                if (typeof updateUserUI === 'function') updateUserUI();
-                window.location.href = '/account/dashboard';
-            }, 1000);
+                window.location.href = '/';
+            }, 2000);
         });
     }
 
@@ -140,6 +177,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (forgotPasswordForm) {
         forgotPasswordForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submitBtn = forgotPasswordForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn ? submitBtn.innerHTML : '';
+            
+            // Show loading state
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Sending OTP...</span>';
+            }
+            
             const email = document.getElementById('forgot-email').value;
             
             // Fixed OTP: 123456
@@ -149,28 +195,31 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('otp_' + email, otp);
             localStorage.setItem('otp_email', email);
             
-            // Hide email form and show OTP section
-            forgotPasswordForm.classList.add('hidden');
-            const otpSection = document.getElementById('otp-section');
-            const formTitle = document.getElementById('form-title');
-            const formSubtitle = document.getElementById('form-subtitle');
-            const otpEmailDisplay = document.getElementById('otp-email-display');
-            
-            if (otpSection) {
-                otpSection.classList.remove('hidden');
-            }
-            if (formTitle) {
-                formTitle.textContent = 'Verify OTP';
-            }
-            if (formSubtitle) {
-                formSubtitle.textContent = 'Enter the 6-digit OTP sent to your email';
-            }
-            if (otpEmailDisplay) {
-                otpEmailDisplay.textContent = email;
-                otpEmailDisplay.classList.remove('hidden');
-            }
-            
-            showToast('OTP sent to your email', 'success');
+            // Simulate API call delay
+            setTimeout(() => {
+                // Hide email form and show OTP section
+                forgotPasswordForm.classList.add('hidden');
+                const otpSection = document.getElementById('otp-section');
+                const formTitle = document.getElementById('form-title');
+                const formSubtitle = document.getElementById('form-subtitle');
+                const otpEmailDisplay = document.getElementById('otp-email-display');
+                
+                if (otpSection) {
+                    otpSection.classList.remove('hidden');
+                }
+                if (formTitle) {
+                    formTitle.textContent = 'Verify OTP';
+                }
+                if (formSubtitle) {
+                    formSubtitle.textContent = 'Enter the 6-digit OTP sent to your email';
+                }
+                if (otpEmailDisplay) {
+                    otpEmailDisplay.textContent = email;
+                    otpEmailDisplay.classList.remove('hidden');
+                }
+                
+                showToast('OTP sent to your email', 'success');
+            }, 1000);
         });
     }
 
@@ -179,26 +228,41 @@ document.addEventListener('DOMContentLoaded', function() {
     if (otpVerifyForm) {
         otpVerifyForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            const submitBtn = otpVerifyForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn ? submitBtn.innerHTML : '';
+            
+            // Show loading state
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Verifying...</span>';
+            }
+            
             const email = localStorage.getItem('otp_email');
             const storedOtp = localStorage.getItem('otp_' + email);
             const otpInputs = document.querySelectorAll('.otp-digit');
             const enteredOtp = Array.from(otpInputs).map(input => input.value).join('');
 
-            if (enteredOtp === storedOtp) {
-                showToast('OTP verified successfully!', 'success');
-                // Hide OTP section and show reset password form
-                const otpSection = document.getElementById('otp-section');
-                const resetPasswordSection = document.getElementById('reset-password-section');
-                const formTitle = document.getElementById('form-title');
-                const formSubtitle = document.getElementById('form-subtitle');
-                
-                if (otpSection) otpSection.classList.add('hidden');
-                if (resetPasswordSection) resetPasswordSection.classList.remove('hidden');
-                if (formTitle) formTitle.textContent = 'Reset Password';
-                if (formSubtitle) formSubtitle.textContent = 'Enter your new password';
-            } else {
-                showToast('Invalid OTP', 'error');
-            }
+            setTimeout(() => {
+                if (enteredOtp === storedOtp) {
+                    showToast('OTP verified successfully!', 'success');
+                    // Hide OTP section and show reset password form
+                    const otpSection = document.getElementById('otp-section');
+                    const resetPasswordSection = document.getElementById('reset-password-section');
+                    const formTitle = document.getElementById('form-title');
+                    const formSubtitle = document.getElementById('form-subtitle');
+                    
+                    if (otpSection) otpSection.classList.add('hidden');
+                    if (resetPasswordSection) resetPasswordSection.classList.remove('hidden');
+                    if (formTitle) formTitle.textContent = 'Reset Password';
+                    if (formSubtitle) formSubtitle.textContent = 'Enter your new password';
+                } else {
+                    showToast('Invalid OTP', 'error');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }
+                }
+            }, 1000);
         });
 
         // Auto-focus next input
@@ -237,12 +301,25 @@ document.addEventListener('DOMContentLoaded', function() {
     if (resetPasswordForm) {
         resetPasswordForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            const submitBtn = resetPasswordForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn ? submitBtn.innerHTML : '';
+            
+            // Show loading state
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Resetting...</span>';
+            }
+            
             const password = document.getElementById('reset-password').value;
             const passwordConfirm = document.getElementById('reset-password-confirm').value;
             const email = localStorage.getItem('otp_email');
 
             if (password !== passwordConfirm) {
                 showToast('Passwords do not match', 'error');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
                 return;
             }
 

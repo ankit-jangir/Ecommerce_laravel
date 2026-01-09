@@ -3,7 +3,7 @@
 @section('title', 'Size Guide - AURA KURTIS')
 
 @section('content')
-<section class="py-10 sm:py-14 bg-[#faf8f6]">
+<section class="py-10 sm:py-14">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
 
         <!-- Heading -->
@@ -123,4 +123,6 @@
 
     </div>
 </section>
+    <x-shop-look-section image="{{ asset('images/shop_img1.webp') }}" title="Shop The Look"
+        subtitle="Fierce elegance is about authenticity" :products="$products['bestsellers']" id="shop-look-carousel" />
 @endsection

@@ -18,7 +18,7 @@
             <button id="account-notification-toggle" type="button"
                 class="text-[#654321] hover:text-[#8B4513] focus:outline-none p-2 hover:bg-white/50 rounded-lg transition-all relative">
                 <i class="fi fi-rr-bell text-xl sm:text-2xl"></i>
-                <span id="notification-badge" class="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-white text-[10px] flex items-center justify-center hidden">0</span>
+                <span id="notification-badge" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-red-500 rounded-full text-white text-[10px] flex items-center justify-center hidden font-bold">0</span>
             </button>
         </nav>
     </div>
@@ -26,16 +26,17 @@
 
 <!-- Account Menu Sidebar -->
 <div id="account-menu-sidebar"
-    class="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-[9999] overflow-y-auto lg:hidden">
-    <div class="p-6">
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
-            <h2 class="text-xl font-serif font-bold text-[#654321]">My Account</h2>
-            <button id="account-menu-close" class="text-gray-400 hover:text-[#8B4513] transition-colors">
-                <i class="fi fi-rr-cross text-2xl"></i>
-            </button>
-        </div>
-        
+    class="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-[9999] flex flex-col lg:hidden">
+    <!-- Fixed Header -->
+    <div class="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
+        <h2 class="text-xl font-serif font-bold text-[#654321]">My Account</h2>
+        <button id="account-menu-close" class="text-gray-400 hover:text-[#8B4513] transition-colors p-2">
+            <i class="fi fi-rr-cross text-2xl"></i>
+        </button>
+    </div>
+    
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto p-6">
         <!-- User Info -->
         <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
             <div class="w-12 h-12 bg-[#8B4513] rounded-full flex items-center justify-center flex-shrink-0 text-white font-semibold text-lg" id="account-menu-user-icon-container">
@@ -95,6 +96,11 @@
                 <i class="fi fi-rr-marker text-sm"></i>
                 <span class="text-sm">My Addresses</span>
             </a>
+            <a href="{{ route('account.notifications') }}" class="flex items-center gap-3 px-3 py-2 {{ request()->routeIs('account.notifications') ? 'bg-[#F5F1EB] text-[#8B4513] font-medium' : 'text-[#654321] hover:bg-[#F5F1EB]' }} rounded-lg transition-colors relative">
+                <i class="fi fi-rr-bell text-sm"></i>
+                <span class="text-sm">Notifications</span>
+                <span id="mobile-notification-badge" class="ml-auto w-5 h-5 bg-red-500 rounded-full text-white text-[10px] flex items-center justify-center font-bold hidden">0</span>
+            </a>
             <div class="pt-4 border-t border-gray-200 mt-4">
                 <a href="{{ route('home') }}" class="flex items-center gap-3 px-3 py-2 text-[#654321] hover:bg-[#F5F1EB] rounded-lg transition-colors">
                     <i class="fi fi-rr-arrow-left text-sm"></i>
@@ -114,15 +120,45 @@
 
 <!-- Notification Modal -->
 <div id="account-notification-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col">
-        <div class="flex items-center justify-between p-6 border-b border-gray-200">
-            <h3 class="text-xl font-serif font-bold text-[#654321]">Notifications</h3>
-            <button id="account-notification-close" class="text-gray-400 hover:text-[#8B4513] transition-colors">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col">
+        <!-- Fixed Header -->
+        <div class="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 flex-shrink-0">
+            <h3 class="text-lg sm:text-xl font-serif font-bold text-[#654321]">Notifications</h3>
+            <button id="account-notification-close" class="text-gray-400 hover:text-[#8B4513] transition-colors p-2">
                 <i class="fi fi-rr-cross text-xl"></i>
             </button>
         </div>
+        
+        <!-- Scrollable Notification List -->
         <div id="notification-list" class="flex-1 overflow-y-auto p-4 space-y-3">
             <!-- Notifications will be populated here -->
+        </div>
+        
+        <!-- Fixed Footer with View All Button -->
+        <div class="border-t border-gray-200 p-4 flex-shrink-0 bg-white">
+            <button onclick="viewAllNotifications()" class="w-full px-4 py-3 bg-[#8B4513] text-white rounded-lg hover:bg-[#654321] transition-colors font-semibold">
+                View All
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Notification Details Modal -->
+<div id="notification-details-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[10000] hidden items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
+        <!-- Fixed Header -->
+        <div class="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 flex-shrink-0">
+            <h3 class="text-lg sm:text-xl font-serif font-bold text-[#654321]" id="notification-details-title">Notification Details</h3>
+            <button onclick="closeNotificationDetails()" class="text-gray-400 hover:text-[#8B4513] transition-colors p-2">
+                <i class="fi fi-rr-cross text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6">
+            <div id="notification-details-content">
+                <!-- Notification details will be populated here -->
+            </div>
         </div>
     </div>
 </div>

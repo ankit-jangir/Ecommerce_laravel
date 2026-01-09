@@ -111,12 +111,14 @@ Route::get('/shop', function () {
 
 // BLOG LIST PAGE
 Route::get('/blogs', function () {
-    return view('Pages.blogs');
+    $products = \App\Helpers\MockData::getHomepageProducts();
+    return view('Pages.blogs', compact('products'));
 })->name('blogs');
 
 // BLOG DETAIL PAGE
 Route::get('/blogs/{slug}', function ($slug) {
-    return view('Pages.blogdetail', compact('slug'));
+    $products = \App\Helpers\MockData::getHomepageProducts();
+    return view('Pages.blogdetail', compact('slug', 'products'));
 })->name('blog.detail');
 
 
@@ -187,6 +189,10 @@ Route::get('/account/addresses', function () {
     return view('Pages.useraccount.addresses');
 })->name('account.addresses');
 
+Route::get('/account/notifications', function () {
+    return view('Pages.useraccount.notifications');
+})->name('account.notifications');
+
 Route::get('/orders', function () {
     return view('Pages.useraccount.orders');
 })->name('orders');
@@ -205,7 +211,8 @@ Route::get('/about-us', function () {
 })->name('about-us');
 
 Route::get('/size-guide', function () {
-    return view('Pages.size-guide');
+    $products = \App\Helpers\MockData::getHomepageProducts();
+    return view('Pages.size-guide', compact('products'));
 })->name('size-guide');
 
 Route::get('/returns', function () {
@@ -247,5 +254,6 @@ Route::get('/account/returns/{id}/track', function ($id) {
 // Product Detail Route
 Route::get('/product/{id}', function ($id) {
     $product = \App\Helpers\MockData::getProductById($id);
-    return view('Pages.product-detail', ['productId' => $id, 'product' => $product]);
+    $products = \App\Helpers\MockData::getHomepageProducts();
+    return view('Pages.product-detail', ['productId' => $id, 'product' => $product, 'products' => $products]);
 })->name('product.detail');

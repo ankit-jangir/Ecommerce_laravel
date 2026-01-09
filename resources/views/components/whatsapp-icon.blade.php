@@ -7,7 +7,7 @@
     href="https://wa.me/{{ $whatsappNumber }}?text={{ urlencode($whatsappMessage) }}"
     target="_blank"
     rel="noopener noreferrer"
-    class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50
+    class="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 lg:bottom-6 lg:right-6 z-40
            w-14 h-14 sm:w-16 sm:h-16
            bg-[#25D366] hover:bg-[#20BA5A]
            rounded-full shadow-2xl

@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             ${isExpired || card.status === 'Expired' ? 
                                 '<span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-medium">Expired</span>' : 
                                 isActive ? 
-                                '<div class="flex gap-2"><button onclick="copyGiftCardCode(\'' + card.code + '\')" class="flex-1 px-4 py-2 border border-[#8B4513] text-[#8B4513] rounded-lg hover:bg-[#F5F1EB] transition-colors text-sm font-medium">Copy Code</button><button onclick="useGiftCard(\'' + card.code + '\', ' + card.balance + ')" class="flex-1 px-4 py-2 bg-[#8B4513] text-white rounded-lg hover:bg-[#654321] transition-colors text-sm font-medium">Use</button></div>' :
+                                '<div class="flex gap-2"><button id="copy-gift-' + card.code + '" onclick="copyGiftCardCode(\'' + card.code + '\', this)" class="flex-1 px-4 py-2 border border-[#8B4513] text-[#8B4513] rounded-lg hover:bg-[#F5F1EB] transition-all text-sm font-medium">Copy Code</button><button onclick="useGiftCard(\'' + card.code + '\', ' + card.balance + ')" class="flex-1 px-4 py-2 bg-[#8B4513] text-white rounded-lg hover:bg-[#654321] transition-colors text-sm font-medium">Use</button></div>' :
                                 '<span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-medium">Inactive</span>'
                             }
                         </div>
@@ -80,12 +80,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function copyGiftCardCode(code) {
+function copyGiftCardCode(code, button) {
     navigator.clipboard.writeText(code).then(() => {
+        // Change button text and style
+        if (button) {
+            const originalText = button.textContent;
+            button.textContent = 'Copied';
+            button.classList.remove('border-[#8B4513]', 'text-[#8B4513]', 'hover:bg-[#F5F1EB]');
+            button.classList.add('bg-[#8B4513]', 'text-white', 'border-[#8B4513]');
+            
+            // Reset after 2 seconds
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('bg-[#8B4513]', 'text-white', 'border-[#8B4513]');
+                button.classList.add('border-[#8B4513]', 'text-[#8B4513]', 'hover:bg-[#F5F1EB]');
+            }, 2000);
+        }
+        
         if (typeof showToast === 'function') {
             showToast('Gift card code copied!', 'success');
         } else {
             alert('Gift card code copied: ' + code);
+        }
+    }).catch(() => {
+        if (typeof showToast === 'function') {
+            showToast('Failed to copy code', 'error');
         }
     });
 }

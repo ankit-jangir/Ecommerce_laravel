@@ -88,23 +88,48 @@ function loadProfileData() {
 function switchTab(tab) {
     const profileTab = document.getElementById('tab-profile');
     const editTab = document.getElementById('tab-edit');
+    const walletTab = document.getElementById('tab-wallet');
     const profileContent = document.getElementById('profile-tab-content');
     const editContent = document.getElementById('edit-tab-content');
+    const walletContent = document.getElementById('wallet-tab-content');
+    
+    // Reset all tabs
+    [profileTab, editTab, walletTab].forEach(t => {
+        if (t) {
+            t.classList.remove('border-[#8B4513]', 'bg-[#F5F1EB]', 'text-[#654321]');
+            t.classList.add('text-gray-500', 'hover:text-[#654321]');
+        }
+    });
+    
+    // Hide all content
+    [profileContent, editContent, walletContent].forEach(c => {
+        if (c) c.classList.add('hidden');
+    });
     
     if (tab === 'profile') {
-        profileTab.classList.add('border-[#8B4513]', 'bg-[#F5F1EB]', 'text-[#654321]');
-        profileTab.classList.remove('text-gray-500');
-        editTab.classList.remove('border-[#8B4513]', 'bg-[#F5F1EB]', 'text-[#654321]');
-        editTab.classList.add('text-gray-500');
-        profileContent.classList.remove('hidden');
-        editContent.classList.add('hidden');
-    } else {
-        editTab.classList.add('border-[#8B4513]', 'bg-[#F5F1EB]', 'text-[#654321]');
-        editTab.classList.remove('text-gray-500');
-        profileTab.classList.remove('border-[#8B4513]', 'bg-[#F5F1EB]', 'text-[#654321]');
-        profileTab.classList.add('text-gray-500');
-        editContent.classList.remove('hidden');
-        profileContent.classList.add('hidden');
+        if (profileTab) {
+            profileTab.classList.add('border-[#8B4513]', 'bg-[#F5F1EB]', 'text-[#654321]');
+            profileTab.classList.remove('text-gray-500', 'hover:text-[#654321]');
+        }
+        if (profileContent) profileContent.classList.remove('hidden');
+    } else if (tab === 'edit') {
+        if (editTab) {
+            editTab.classList.add('border-[#8B4513]', 'bg-[#F5F1EB]', 'text-[#654321]');
+            editTab.classList.remove('text-gray-500', 'hover:text-[#654321]');
+        }
+        if (editContent) editContent.classList.remove('hidden');
+    } else if (tab === 'wallet') {
+        if (walletTab) {
+            walletTab.classList.add('border-[#8B4513]', 'bg-[#F5F1EB]', 'text-[#654321]');
+            walletTab.classList.remove('text-gray-500', 'hover:text-[#654321]');
+        }
+        if (walletContent) {
+            walletContent.classList.remove('hidden');
+            // Load wallet data when tab is opened
+            if (typeof loadWalletData === 'function') {
+                loadWalletData();
+            }
+        }
     }
 }
 

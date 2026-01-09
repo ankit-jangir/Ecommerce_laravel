@@ -5,310 +5,319 @@
 @section('content')
 
 @php
-$products = [
-[
-'id' => 1,
-'slug' => 'elegant-cotton-kurti',
-'title' => 'Elegant Cotton Kurti',
-'category' => 'Daily Wear',
-'image' => 'https://khatricreations.com/cdn/shop/files/KC200246_1.png?crop=center&height=2389&v=1764854172&width=1792',
-'price' => 999,
-'old_price' => 1999,
-'badge' => 'SALE',
-'badge_value' => '-52%',
-],
-[
-'id' => 2,
-'slug' => 'Festive-Anarkali-Kurti',
-'title' => 'Festive Anarkali Kurti',
-'category' => 'Festive',
-'image' => 'https://stylejaipur.com/cdn/shop/files/PHOTO-2023-10-09-21-02-48.jpg?v=1728409404&width=533',
-'price' => 1499,
-'old_price' => 799,
-'badge' => 'NEW',
-],
-[
-'id' => 3,
-'slug' => 'Office-Wear-Straight-Kurti',
-'title' => 'Office Wear Straight Kurti',
-'category' => 'Office',
-'image' => 'https://stylejaipur.com/cdn/shop/files/WhatsAppImage2023-09-29at11.24.49PM.jpg?v=1728409204&width=533',
-'price' => 899,
-'old_price' => 799,
-'badge' => 'TRENDING',
-],
-[
-'id' => 5,
-'slug' => 'Daily-Wear-Printed-Kurti',
-'title' => 'Daily Wear Printed Kurti',
-'category' => 'Daily Wear',
-'image' => 'https://stylejaipur.com/cdn/shop/files/DSC_2461copy.jpg?v=1767345930&width=533',
-'price' => 799,
-'old_price' => 799,
-'badge' => 'NEW',
-],
-];
+// Get all products from MockData
+$allProducts = \App\Helpers\MockData::getHomepageProducts();
+$products = collect($allProducts)->flatten(1)->toArray();
+$bestsellers = $allProducts['bestsellers'] ?? [];
 
-$newProducts = collect($products)->filter(fn($p) => isset($p['badge']) && $p['badge'] === 'NEW');
+// Filter products with NEW badge
+$newProducts = [];
+foreach ($products as $index => $product) {
+    $nextIndex = ($index + 1) % count($products);
+    $product['hover_image'] = $products[$nextIndex]['image'] ?? $product['image'];
+    $product['color'] = ['Red', 'Blue', 'Black', 'Pink', 'Green', 'Yellow', 'White', 'Orange'][$index % 8] ?? 'Red';
+    $product['size'] = ['S', 'M', 'L', 'XL', 'XXL'][$index % 5] ?? 'M';
+    
+    // Add NEW badge to all products
+    $product['badge'] = 'NEW';
+    $product['badge_color'] = 'red';
+    
+    $newProducts[] = $product;
+}
+$products = $newProducts;
 
-$perPage = 6;
-$page = request()->get('page', 1);
-$totalPages = ceil($newProducts->count() / $perPage);
-
-$paginatedProducts = $newProducts->slice(($page - 1) * $perPage, $perPage);
+$colors = ['Red', 'Blue', 'Black', 'Pink', 'Green', 'Yellow', 'White', 'Orange'];
+$sizes = ['S', 'M', 'L', 'XL', 'XXL'];
 @endphp
 
-<!-- ================= BEAUTIFUL HERO ================= -->
-<section class="relative overflow-hidden">
-    <!-- Background Image -->
+<!-- ================= HERO SECTION ================= -->
+<section class="relative h-[300px] sm:h-[400px] lg:h-[500px] overflow-hidden">
     <img src="https://tipsandbeauty.com/wp-content/uploads/2021/01/Stylish-Anarkali-Short-Kurti-With-Long-Flared-Sharara.jpg"
-        class="w-full h-[450px] sm:h-[520px] object-cover scale-105">
+        class="absolute inset-0 w-full h-full object-cover">
+    <div class="absolute inset-0 bg-black/60"></div>
 
-    <!-- Gradient Overlay -->
-    <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/20"></div>
-
-    <!-- Content -->
-    <div class="absolute inset-0 flex items-center justify-center px-4">
-        <div
-            class="bg-white/90 backdrop-blur-lg px-8 sm:px-12 py-10 text-center max-w-xl rounded-2xl shadow-2xl animate-fadeIn">
-
-            <!-- Badge -->
-            <span
-                class="inline-block mb-4 px-4 py-1 text-xs tracking-widest font-semibold text-white bg-[#654321] rounded-full">
+    <div class="relative container mx-auto px-4 sm:px-6 h-full flex items-center justify-center text-center">
+        <div class="text-white max-w-3xl">
+            <span class="inline-block mb-4 px-4 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm tracking-widest bg-white/20 rounded-full">
                 ✨ JUST LAUNCHED
             </span>
-
-            <!-- Title -->
-            <h1 class="text-3xl sm:text-5xl font-serif font-bold text-[#654321] leading-tight">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
                 New Arrivals
             </h1>
-
-            <!-- Subtitle -->
-            <p class="mt-4 text-sm sm:text-base text-gray-700 leading-relaxed">
-                Discover our latest handpicked collection of elegant, stylish and comfortable
-                women kurtis designed for every occasion.
+            <p class="mt-4 text-sm sm:text-base text-gray-200 max-w-2xl mx-auto">
+                Discover our latest handpicked collection of elegant, stylish and comfortable kurtis designed for every occasion.
             </p>
-
-
         </div>
     </div>
 </section>
 
+<!-- ================= MAIN ================= -->
+<section class="py-8 sm:py-12 lg:py-16 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header with Sort -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+            <div>
+                <p class="text-sm sm:text-base text-gray-600">Showing <span class="font-semibold text-black" id="product-count">{{ count($products) }}</span> new products</p>
+            </div>
+            <div>
+                <select id="sort-select" class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] outline-none">
+                    <option value="popularity">Sort by Popularity</option>
+                    <option value="price_low">Price: Low to High</option>
+                    <option value="price_high">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                </select>
+            </div>
+        </div>
 
-<!-- ================= PRODUCTS ================= -->
-<section class="py-16 bg-gray-50">
-    <div class="container mx-auto px-4 lg:px-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Products Grid - Responsive: Phone 2, Tablet 2-3, Desktop 3 -->
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6" id="products-grid">
+        
+        <!-- No Products Message -->
+        <div id="no-products-message" class="col-span-full hidden">
+            <div class="flex flex-col items-center justify-center py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-gray-50 to-white rounded-xl border border-gray-200">
+                <div class="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 mb-4 sm:mb-6">
+                    <svg class="w-full h-full text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-black mb-2 sm:mb-3">No Products Found</h3>
+                <p class="text-xs sm:text-sm text-gray-600 text-center max-w-sm mb-4 sm:mb-6 px-4">
+                    We couldn't find any products matching your criteria.
+                </p>
+            </div>
+        </div>
+            @foreach($products as $product)
+            <div class="group cursor-pointer block product-card relative filterable-product" 
+                 data-category="{{ $product['category'] ?? '' }}"
+                 data-color="{{ $product['color'] ?? '' }}"
+                 data-size="{{ $product['size'] ?? '' }}"
+                 data-price="{{ $product['price'] }}"
+                 data-name="{{ $product['name'] }}"
+                 data-id="{{ $product['id'] }}"
+                 data-image="{{ $product['image'] }}"
+                 data-hover-image="{{ $product['hover_image'] ?? $product['image'] }}"
+                 data-badge="{{ $product['badge'] ?? '' }}"
+                 data-badge-color="{{ $product['badge_color'] ?? '' }}"
+                 data-description="{{ $product['description'] ?? '' }}"
+                 data-original-price="{{ $product['original_price'] ?? '' }}">
+                <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
+                    <div class="relative overflow-hidden mb-2 sm:mb-3 md:mb-4 rounded-lg bg-white">
+                        <div class="relative w-full aspect-square overflow-hidden">
+                            <!-- Default Image -->
+                            <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
+                                class="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 group-hover:opacity-0">
+                            <!-- Hover Image -->
+                            <img src="{{ $product['hover_image'] ?? $product['image'] }}" alt="{{ $product['name'] }}"
+                                class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                        </div>
 
-            @forelse ($paginatedProducts as $product)
-            <div class="group bg-white rounded-2xl overflow-hidden shadow hover:shadow-lg transition relative">
-
-                <a href="{{ route('product.detail', $product['slug']) }}">
-                    <img src="{{ $product['image'] }}"
-                        class="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-105">
-                </a>
-
-                <!-- BADGE -->
-                @if(isset($product['badge']))
-                <span class="absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full
-                    {{ $product['badge'] === 'NEW' ? 'bg-black text-white' : '' }}
-                    {{ $product['badge'] === 'SALE' ? 'bg-white text-red-600' : '' }}
-                    {{ $product['badge'] === 'TRENDING' ? 'bg-orange-500 text-white' : '' }}">
-                    {{ $product['badge'] === 'SALE' ? $product['badge_value'] : $product['badge'] }}
-                </span>
-                @endif
-
-                <div class="p-4">
-                    <h3 class="text-sm font-medium mb-2">{{ $product['title'] }}</h3>
-                    <div class="flex items-center gap-2">
-                        <span class="text-red-600 font-semibold">₹{{ $product['price'] }}</span>
-                        @if ($product['old_price'])
-                        <span class="line-through text-gray-400 text-xs">₹{{ $product['old_price'] }}</span>
+                        @if(isset($product['badge']) && $product['badge'])
+                            <span class="absolute top-2 left-2 sm:top-3 sm:left-3 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold bg-red-500">
+                                {{ $product['badge'] }}
+                            </span>
                         @endif
+
+                        <!-- Action Icons - Right Side -->
+                        <div class="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 z-20">
+                            <button type="button" 
+                                data-wishlist-id="{{ $product['id'] }}"
+                                class="wishlist-btn w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow-md hover:bg-[#654321] hover:text-white transition z-30">
+                                <i class="fi fi-rr-heart text-xs sm:text-sm"></i>
+                            </button>
+                            <a href="{{ route('product.detail', ['id' => $product['id']]) }}"
+                                class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow-md hover:bg-[#654321] hover:text-white transition z-30">
+                                <i class="fi fi-rr-eye text-xs sm:text-sm"></i>
+                            </a>
+                            <button type="button"
+                                class="action-cart w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-[#654321] flex items-center justify-center shadow-md hover:bg-[#654321] hover:text-white transition z-30"
+                                data-product-id="{{ $product['id'] }}" 
+                                data-product-name="{{ $product['name'] }}"
+                                data-product-price="{{ $product['price'] }}"
+                                data-product-image="{{ $product['image'] }}">
+                                <i class="fi fi-rr-shopping-bag text-xs sm:text-sm"></i>
+                            </button>
+                        </div>
                     </div>
-
-                    <!-- Hover icons -->
-                    <div class="flex gap-3 mt-3 opacity-0 group-hover:opacity-100 transition">
-                        <button onclick="toggleWishlist(this)"
-                            class="w-9 h-9 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200 transition">
-                            <i class="fi fi-sr-heart text-gray-700"></i>
-                        </button>
-
-                        <a href="{{ route('product.detail', $product['slug']) }}"
-                            class="w-9 h-9 flex items-center justify-center bg-gray-100 rounded-full hover:bg-black hover:text-white transition">
-                            <i class="fi fi-rr-eye"></i>
-                        </a>
-
-                        <button
-                            onclick="openCartModal('{{ $product['image'] }}','{{ $product['title'] }}','{{ $product['price'] }}','{{ $product['old_price'] ?? '' }}')"
-                            class="w-9 h-9 flex items-center justify-center bg-gray-100 rounded-full hover:bg-black hover:text-white transition">
-                            <i class="fi fi-rr-shopping-bag"></i>
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-            @empty
-            <p class="col-span-3 text-center text-gray-500">No new arrivals at the moment.</p>
-            @endforelse
-
-        </div>
-
-        <!-- ================= PAGINATION ================= -->
-        <div class="flex justify-center mt-12 gap-2">
-            @for ($p = 1; $p <= $totalPages; $p++) <a href="{{ request()->fullUrlWithQuery(['page' => $p]) }}" class="px-4 py-2 text-sm border rounded-full transition
-                {{ $page == $p ? 'bg-black text-white' : 'hover:bg-black hover:text-white' }}">
-                {{ $p }}
                 </a>
-                @endfor
+                
+                <div class="px-1">
+                    <a href="{{ route('product.detail', ['id' => $product['id']]) }}">
+                        <h3 class="text-sm sm:text-base font-medium text-black mb-1 sm:mb-2 line-clamp-2 hover:text-[#8B4513] transition-colors">
+                            {{ $product['name'] }}
+                        </h3>
+                    </a>
+                    @if(isset($product['description']))
+                        <p class="text-xs text-gray-500 mb-1 line-clamp-1">{{ $product['description'] }}</p>
+                    @endif
+                    <p class="text-sm sm:text-base text-[#8B4513] font-semibold">
+                        ₹{{ number_format($product['price']) }}
+                        @if(isset($product['original_price']) && $product['original_price'])
+                            <span class="text-xs text-gray-400 line-through ml-2">₹{{ number_format($product['original_price']) }}</span>
+                        @endif
+                    </p>
+                </div>
+            </div>
+            @endforeach
         </div>
+
+        <!-- Pagination -->
+        <div id="pagination-container" class="flex justify-center items-center gap-2 mt-6 sm:mt-8 lg:mt-12 flex-wrap"></div>
     </div>
 </section>
 
-<!-- ================= CART MODAL ================= -->
-<div id="cartModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center px-4">
+<!-- Our Bestsellers Carousel with Auto-Slide -->
+<x-product-carousel id="bestsellers" title="OUR BESTSELLERS" :products="$bestsellers" />
 
-    <div class="bg-white w-full max-w-xl rounded-3xl p-6 relative">
-
-        <!-- Close -->
-        <button onclick="closeCartModal()"
-            class="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-black hover:text-white transition">
-            ✕
-        </button>
-
-        <!-- Product -->
-        <div class="flex gap-5">
-            <img id="cartProductImage" src="" class="w-32 h-40 object-cover rounded-xl">
-
-            <div class="flex-1">
-                <h3 id="cartProductTitle" class="font-semibold text-lg">Product Title</h3>
-
-                <div class="flex items-center gap-3 mt-1">
-                    <span id="cartProductPrice" class="text-red-600 font-bold text-lg">₹0</span>
-                    <span id="cartProductOldPrice" class="line-through text-sm text-gray-400"></span>
-                </div>
-
-                <!-- Quantity -->
-                <div class="flex items-center gap-3 mt-4">
-                    <button onclick="changeQty(-1)" class="w-9 h-9 bg-gray-100 rounded-full text-lg">−</button>
-
-                    <span id="qtyValue" class="font-semibold">1</span>
-
-                    <button onclick="changeQty(1)" class="w-9 h-9 bg-gray-100 rounded-full text-lg">+</button>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Size -->
-        <div class="mt-6">
-            <p class="text-sm font-medium mb-2">Size:</p>
-            <div class="flex gap-2">
-                @foreach (['M', 'L', 'XL', 'XXL', '3XL'] as $size)
-                <button class="size-btn px-4 py-2 border rounded-full text-sm transition" data-size="{{ $size }}"
-                    onclick="selectSize(this)">
-                    {{ $size }}
-                </button>
-                @endforeach
-            </div>
-        </div>
-
-        <!-- Add to Cart -->
-        <button onclick="closeCartModal()"
-            class="w-full mt-6 py-3 rounded-full bg-gray-700 text-white hover:bg-black transition">
-            Add To Cart
-        </button>
-
-        <!-- Terms -->
-        <a href="{{ route('terms') }}"> <label class="flex items-center gap-3 mt-5 text-sm cursor-pointer">
-                <input type="checkbox" id="termsCheck" onchange="toggleBuyBtn()" class="w-4 h-4 accent-black">
-                I agree with <span class="underline">Terms & Conditions</span>
-            </label></a>
-
-
-        <!-- Buy Now -->
-        <button id="buyBtn" onclick="closeCartModal()"
-            class="w-full mt-4 py-3 rounded-full bg-orange-300 text-white opacity-50 cursor-not-allowed" disabled>
-            Buy Now
-        </button>
-
-    </div>
-</div>
-
-<!-- ================= JS ================= -->
+@push('scripts')
 <script>
-function toggleWishlist(btn) {
-    const icon = btn.querySelector('i');
-    icon.classList.toggle('text-pink-500');
-    icon.classList.toggle('text-gray-700');
-}
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all products
+    const allProducts = Array.from(document.querySelectorAll('.filterable-product'));
+    let currentPage = 1;
+    const productsPerPage = 12;
 
-/* ================= CART MODAL ================= */
-let qty = 1;
-let selectedSize = '';
+    // Display products with pagination
+    function displayProducts(visibleProducts) {
+        const start = (currentPage - 1) * productsPerPage;
+        const end = start + productsPerPage;
+        const pageProducts = visibleProducts.slice(start, end);
 
-function openCartModal(image, title, price, oldPrice) {
-    document.getElementById('cartModal').classList.remove('hidden');
-    document.getElementById('cartModal').classList.add('flex');
-
-    // Set product data
-    document.getElementById('cartProductImage').src = image;
-    document.getElementById('cartProductTitle').innerText = title;
-    document.getElementById('cartProductPrice').innerText = `₹${price}`;
-    document.getElementById('cartProductOldPrice').innerText = oldPrice ? `₹${oldPrice}` : '';
-
-    // reset quantity
-    qty = 1;
-    document.getElementById('qtyValue').innerText = qty;
-
-    // reset size
-    selectedSize = '';
-    document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('bg-black', 'text-white',
-        'border-black'));
-
-    // reset buy btn
-    const buyBtn = document.getElementById('buyBtn');
-    const check = document.getElementById('termsCheck');
-    buyBtn.disabled = true;
-    buyBtn.classList.add('opacity-50', 'cursor-not-allowed');
-    buyBtn.classList.remove('bg-orange-500');
-    check.checked = false;
-}
-
-function closeCartModal() {
-    document.getElementById('cartModal').classList.add('hidden');
-    document.getElementById('cartModal').classList.remove('flex');
-}
-
-function toggleBuyBtn() {
-    const buyBtn = document.getElementById('buyBtn');
-    const check = document.getElementById('termsCheck');
-
-    if (check.checked) {
-        buyBtn.disabled = false;
-        buyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-        buyBtn.classList.add('bg-orange-500');
-    } else {
-        buyBtn.disabled = true;
-        buyBtn.classList.add('opacity-50', 'cursor-not-allowed');
-        buyBtn.classList.remove('bg-orange-500');
+        allProducts.forEach(product => product.style.display = 'none');
+        pageProducts.forEach(product => product.style.display = 'block');
     }
-}
 
-/* ================= QUANTITY ================= */
-function changeQty(value) {
-    qty += value;
-    if (qty < 1) qty = 1;
-    document.getElementById('qtyValue').innerText = qty;
-}
+    // Update pagination
+    function updatePagination(visibleProducts) {
+        const totalPages = Math.ceil(visibleProducts.length / productsPerPage);
+        const paginationContainer = document.getElementById('pagination-container');
+        
+        if (!paginationContainer) return;
+        
+        if (visibleProducts.length <= productsPerPage || totalPages <= 1) {
+            paginationContainer.innerHTML = '';
+            return;
+        }
 
-/* ================= SIZE ================= */
-function selectSize(button) {
-    document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('bg-black', 'text-white',
-        'border-black'));
-    button.classList.add('bg-black', 'text-white', 'border-black');
-    selectedSize = button.innerText;
-}
+        let paginationHTML = '';
+        if (currentPage > 1) {
+            paginationHTML += `<button onclick="changePage(${currentPage - 1})" class="px-2 py-1 sm:px-3 sm:py-1.5 border border-gray-300 rounded-lg text-[10px] sm:text-xs text-gray-700 hover:bg-[#F5F1EB] transition-colors">← Prev</button>`;
+        }
+
+        const maxVisiblePages = window.innerWidth < 640 ? 5 : 7;
+        const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+        
+        if (startPage > 1) {
+            paginationHTML += `<button onclick="changePage(1)" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-gray-300 text-[10px] sm:text-xs text-gray-700 hover:bg-[#F5F1EB] transition-colors">1</button>`;
+            if (startPage > 2) paginationHTML += `<span class="px-1 sm:px-2 text-gray-500 text-xs">...</span>`;
+        }
+        
+        for (let i = startPage; i <= endPage; i++) {
+            paginationHTML += `<button onclick="changePage(${i})" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-gray-300 text-[10px] sm:text-xs ${i === currentPage ? 'bg-[#8B4513] text-white border-[#8B4513]' : 'text-gray-700 hover:bg-[#F5F1EB]'} transition-colors">${i}</button>`;
+        }
+        
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) paginationHTML += `<span class="px-1 sm:px-2 text-gray-500 text-xs">...</span>`;
+            paginationHTML += `<button onclick="changePage(${totalPages})" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-gray-300 text-[10px] sm:text-xs text-gray-700 hover:bg-[#F5F1EB] transition-colors">${totalPages}</button>`;
+        }
+
+        if (currentPage < totalPages) {
+            paginationHTML += `<button onclick="changePage(${currentPage + 1})" class="px-2 py-1 sm:px-3 sm:py-1.5 border border-gray-300 rounded-lg text-[10px] sm:text-xs text-gray-700 hover:bg-[#F5F1EB] transition-colors">Next →</button>`;
+        }
+
+        paginationContainer.innerHTML = paginationHTML;
+    }
+
+    window.changePage = function(page) {
+        currentPage = page;
+        const visibleProducts = allProducts.filter(p => p.style.display !== 'none' || true);
+        displayProducts(allProducts);
+        updatePagination(allProducts);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // Initialize - show all products
+    displayProducts(allProducts);
+    updatePagination(allProducts);
+
+    // Wishlist functionality
+    const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+    
+    wishlistButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const productId = this.getAttribute('data-wishlist-id');
+            const icon = this.querySelector('i');
+            
+            if (window.wishlistManager) {
+                window.wishlistManager.toggleWishlist(productId);
+                const isInWishlist = window.wishlistManager.isInWishlist(productId);
+                
+                if (isInWishlist) {
+                    icon.classList.remove('fi-rr-heart');
+                    icon.classList.add('fi-sr-heart', 'text-pink-500');
+                    this.classList.add('bg-pink-50');
+                } else {
+                    icon.classList.remove('fi-sr-heart', 'text-pink-500');
+                    icon.classList.add('fi-rr-heart');
+                    this.classList.remove('bg-pink-50');
+                }
+            }
+        });
+    });
+
+    if (window.wishlistManager) {
+        wishlistButtons.forEach(btn => {
+            const productId = btn.getAttribute('data-wishlist-id');
+            const isInWishlist = window.wishlistManager.isInWishlist(productId);
+            const icon = btn.querySelector('i');
+            
+            if (isInWishlist) {
+                icon.classList.remove('fi-rr-heart');
+                icon.classList.add('fi-sr-heart', 'text-pink-500');
+                btn.classList.add('bg-pink-50');
+            }
+        });
+    }
+
+    // Sort functionality
+    const sortSelect = document.getElementById('sort-select');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            sortProducts(this.value);
+        });
+    }
+
+    function sortProducts(sortBy) {
+        const products = Array.from(document.querySelectorAll('.product-card'));
+        const grid = document.getElementById('products-grid');
+        
+        products.sort((a, b) => {
+            const priceA = parseInt(a.getAttribute('data-price'));
+            const priceB = parseInt(b.getAttribute('data-price'));
+            const nameA = a.getAttribute('data-name').toLowerCase();
+            const nameB = b.getAttribute('data-name').toLowerCase();
+            const idA = parseInt(a.getAttribute('data-id')) || 0;
+            const idB = parseInt(b.getAttribute('data-id')) || 0;
+            
+            switch(sortBy) {
+                case 'price_low':
+                    return priceA - priceB;
+                case 'price_high':
+                    return priceB - priceA;
+                case 'newest':
+                    return idB - idA;
+                default:
+                    return nameA.localeCompare(nameB);
+            }
+        });
+        
+        products.forEach(product => grid.appendChild(product));
+    }
+});
 </script>
+@endpush
 
 @endsection

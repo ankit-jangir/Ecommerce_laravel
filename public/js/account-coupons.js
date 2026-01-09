@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <p>Valid until: ${new Date(coupon.validUntil).toLocaleDateString()}</p>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="copyCouponCode('${coupon.code}')" class="flex-1 px-4 py-2 border border-[#8B4513] text-[#8B4513] rounded-lg hover:bg-[#F5F1EB] transition-colors text-sm font-medium">
+                            <button id="copy-btn-${coupon.code}" onclick="copyCouponCode('${coupon.code}', this)" class="flex-1 px-4 py-2 border border-[#8B4513] text-[#8B4513] rounded-lg hover:bg-[#F5F1EB] transition-all text-sm font-medium">
                                 Copy Code
                             </button>
                             ${isExpired || coupon.status === 'expired' ? '' : 
@@ -90,12 +90,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function copyCouponCode(code) {
+function copyCouponCode(code, button) {
     navigator.clipboard.writeText(code).then(() => {
+        // Change button text and style
+        if (button) {
+            const originalText = button.textContent;
+            button.textContent = 'Copied';
+            button.classList.remove('border-[#8B4513]', 'text-[#8B4513]', 'hover:bg-[#F5F1EB]');
+            button.classList.add('bg-[#8B4513]', 'text-white', 'border-[#8B4513]');
+            
+            // Reset after 2 seconds
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('bg-[#8B4513]', 'text-white', 'border-[#8B4513]');
+                button.classList.add('border-[#8B4513]', 'text-[#8B4513]', 'hover:bg-[#F5F1EB]');
+            }, 2000);
+        }
+        
         if (typeof showToast === 'function') {
             showToast('Coupon code copied!', 'success');
         } else {
             alert('Coupon code copied: ' + code);
+        }
+    }).catch(() => {
+        if (typeof showToast === 'function') {
+            showToast('Failed to copy code', 'error');
         }
     });
 }

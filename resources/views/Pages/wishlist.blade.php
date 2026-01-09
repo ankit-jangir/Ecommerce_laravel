@@ -11,7 +11,7 @@
                 </nav>
                 <h1 class="text-2xl sm:text-3xl font-serif font-bold text-[#654321]">Wishlist</h1>
             </div>
-            <div id="wishlist-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div id="wishlist-list" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 <!-- Wishlist items will be populated here -->
             </div>
         </div>

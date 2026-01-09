@@ -1,5 +1,5 @@
 <!-- NEWSLETTER / SUBSCRIBE SECTION -->
-<section class="bg-[#F5F1EB] py-10 sm:py-14 lg:py-16">
+<section class="bg-[#F5F1EB] py-8 sm:py-12 lg:py-16 pb-4 sm:pb-8 lg:pb-12">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="max-w-3xl mx-auto text-center">

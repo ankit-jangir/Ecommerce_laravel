@@ -60,6 +60,11 @@
                 <i class="fi fi-rr-marker text-sm"></i>
                 <span class="text-sm">My Addresses</span>
             </a>
+            <a href="{{ route('account.notifications') }}" class="flex items-center gap-3 px-3 py-2 {{ request()->routeIs('account.notifications') ? 'bg-[#F5F1EB] text-[#8B4513] font-medium' : 'text-[#654321] hover:bg-[#F5F1EB]' }} rounded-lg transition-colors relative">
+                <i class="fi fi-rr-bell text-sm"></i>
+                <span class="text-sm">Notifications</span>
+                <span id="sidebar-notification-badge" class="ml-auto w-5 h-5 bg-red-500 rounded-full text-white text-[10px] flex items-center justify-center font-bold hidden">0</span>
+            </a>
             <p class="text-xs font-semibold text-gray-400 uppercase mb-2 mt-4 px-2">SETTINGS</p>
             <a href="{{ route('home') }}" class="flex items-center gap-3 px-3 py-2 text-[#654321] hover:bg-[#F5F1EB] rounded-lg transition-colors">
                 <i class="fi fi-rr-arrow-left text-sm"></i>

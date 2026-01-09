@@ -5,55 +5,80 @@ class CartManager {
         this.updateCartUI();
     }
 
-    addToCart(product) {
+    addToCart(product, showNotification = true) {
         const existingItem = this.cart.find(item => item.id === product.id && item.size === product.size);
         
         if (existingItem) {
-            existingItem.quantity += product.quantity || 1;
-        } else {
-            this.cart.push({
-                id: product.id,
-                name: product.name,
-                image: product.image || '',
-                price: product.price,
-                quantity: product.quantity || 1,
-                size: product.size || 'M',
-                color: product.color || ''
-            });
+            // Already in cart - remove it (toggle behavior)
+            this.removeFromCart(product.id, product.size || 'M');
+            return;
         }
+        
+        // Add new item to cart
+        this.cart.push({
+            id: product.id,
+            name: product.name,
+            image: product.image || '',
+            price: product.price,
+            quantity: product.quantity || 1,
+            size: product.size || 'M',
+            color: product.color || ''
+        });
         
         this.saveCart();
         this.updateCartUI();
-        this.updateCartButtons(product.id);
-        if (typeof showToast === 'function') {
+        this.updateCartButtons(product.id, false);
+        if (showNotification && typeof showToast === 'function') {
             showToast('Product added to cart!', 'success');
         }
     }
     
-    updateCartButtons(productId) {
+    updateCartButtons(productId, keepAdded = false) {
         // Update cart button state
         document.querySelectorAll(`[data-product-id="${productId}"].action-cart`).forEach(btn => {
-            btn.classList.add('bg-[#8B4513]', 'text-white');
-            btn.classList.remove('bg-white', 'text-[#654321]');
-            const icon = btn.querySelector('i');
-            if (icon) {
-                icon.className = 'fi fi-rr-check text-sm';
-            }
-            setTimeout(() => {
-                btn.classList.remove('bg-[#8B4513]', 'text-white');
-                btn.classList.add('bg-white', 'text-[#654321]');
+            const isInCart = this.cart.some(item => item.id === productId);
+            
+            if (isInCart) {
+                // Product is in cart - show added state (theme color)
+                btn.classList.add('bg-[#8B4513]', 'text-white');
+                btn.classList.remove('bg-white', 'text-[#654321]', 'hover:bg-[#654321]', 'hover:text-white');
+                const icon = btn.querySelector('i');
                 if (icon) {
-                    icon.className = 'fi fi-rr-shopping-bag text-sm';
+                    icon.className = 'fi fi-rr-check text-xs sm:text-sm';
                 }
-            }, 2000);
+            } else {
+                // Not in cart - show normal state
+                btn.classList.remove('bg-[#8B4513]', 'text-white');
+                btn.classList.add('bg-white', 'text-[#654321]', 'hover:bg-[#654321]', 'hover:text-white');
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.className = 'fi fi-rr-shopping-bag text-xs sm:text-sm';
+                }
+            }
+        });
+    }
+    
+    updateAllCartButtons() {
+        // Update all cart buttons on page load
+        document.querySelectorAll('.action-cart').forEach(btn => {
+            const productId = btn.getAttribute('data-product-id');
+            if (productId) {
+                this.updateCartButtons(productId, true);
+            }
         });
     }
 
     removeFromCart(productId, size) {
+        const itemToRemove = this.cart.find(item => item.id === productId && item.size === size);
         this.cart = this.cart.filter(item => !(item.id === productId && item.size === size));
         this.saveCart();
         this.updateCartUI();
-        showToast('Product removed from cart', 'success');
+        // Update button state when removed - immediately change to normal
+        this.updateCartButtons(productId, false);
+        if (typeof showToast === 'function') {
+            showToast('Product removed from cart', 'success');
+        }
+        return itemToRemove;
     }
 
     updateQuantity(productId, size, quantity) {
@@ -65,6 +90,8 @@ class CartManager {
                 item.quantity = quantity;
                 this.saveCart();
                 this.updateCartUI();
+                // Update button state
+                this.updateCartButtons(productId, false);
             }
         }
     }
@@ -104,7 +131,7 @@ class CartManager {
                 `;
             } else {
                 cartItems.innerHTML = `
-                    <p class="text-sm font-semibold text-[#654321] mb-4">Products</p>
+                    <h3 class="text-sm font-semibold text-[#654321] mb-4">Products</h3>
                 ` + this.cart.map(item => `
                     <div class="flex gap-4 p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow" data-product-id="${item.id}" data-size="${item.size}">
                         <img src="${item.image || 'https://via.placeholder.com/80'}" alt="${item.name}" 
@@ -141,6 +168,10 @@ let cartManager;
 document.addEventListener('DOMContentLoaded', function() {
     cartManager = new CartManager();
     window.cartManager = cartManager; // Make it globally accessible
+    // Update all cart buttons to show added state if products are in cart
+    setTimeout(() => {
+        cartManager.updateAllCartButtons();
+    }, 100);
 });
 
 // Add to cart buttons
@@ -169,12 +200,16 @@ function handleCheckout() {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     
     if (cart.length === 0) {
-        showToast('Your cart is empty', 'error');
+        if (typeof showToast === 'function') {
+            showToast('Your cart is empty', 'error');
+        }
         return;
     }
     
     if (!currentUser) {
-        showToast('Please login to checkout', 'error');
+        if (typeof showToast === 'function') {
+            showToast('Please login to checkout', 'error');
+        }
         setTimeout(() => {
             window.location.href = '/login';
         }, 1500);

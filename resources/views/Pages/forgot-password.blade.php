@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password - AURA KURTIS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
-    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.1.0/uicons-bold-rounded/css/uicons-bold-rounded.css">
-    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.1.0/uicons-solid-rounded/css/uicons-solid-rounded.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body class="font-sans antialiased bg-white">
+@extends('layouts.auth')
+
+@section('title', 'Forgot Password - AURA KURTIS')
+
+@section('content')
     <section class="py-12 sm:py-16 bg-[#F5F1EB] min-h-screen flex items-center">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-md mx-auto bg-white rounded-xl shadow-2xl p-8">
@@ -88,8 +80,8 @@
             </div>
         </div>
     </section>
-    <script src="{{ asset('js/toast.js') }}"></script>
-    <script src="{{ asset('js/auth.js') }}"></script>
-</body>
-</html>
+    @push('scripts')
+        <script src="{{ asset('js/auth.js') }}"></script>
+    @endpush
+@endsection
 

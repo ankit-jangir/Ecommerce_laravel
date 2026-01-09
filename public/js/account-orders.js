@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <p class="font-semibold text-[#654321] mb-1">${order.orderNumber}</p>
                                 <p class="text-sm text-gray-500">Placed on ${new Date(order.date).toLocaleDateString()}</p>
                             </div>
-                            <span class="px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${statusColors[order.status] || 'bg-gray-100 text-gray-700'} mt-2 sm:mt-0 inline-block">${order.status}</span>
+                            <span class="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium ${statusColors[order.status] || 'bg-gray-100 text-gray-700'} mt-2 sm:mt-0 inline-block whitespace-nowrap">${order.status}</span>
                         </div>
                         <div class="space-y-3 mb-4">
                             ${order.items.map(item => `

@@ -9,7 +9,7 @@
                     <i class="fi fi-rr-menu-burger text-xl sm:text-2xl"></i>
                 </button>
                 <a href="{{ route('home') }}"
-                    class="logo text-xl sm:text-2xl lg:text-3xl font-serif text-[#8B4513] hover:text-[#654321] transition-colors font-semibold">
+                    class="logo text-[0.8rem] sm:text-[0.8rem] lg:text-3xl font-serif text-[#8B4513] hover:text-[#654321] transition-colors font-semibold">
                     AURA KURTIS
                 </a>
             </div>
@@ -141,6 +141,8 @@
                 <a href="{{ route('wishlist') }}"
                     class="text-[#654321] hover:text-[#8B4513] focus:outline-none p-2 hover:bg-white/50 rounded-lg transition-all relative">
                     <i class="fi fi-rr-heart text-lg sm:text-xl"></i>
+                    <span id="wishlist-count"
+                        class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold hidden">0</span>
                 </a>
                 <button id="cart-toggle"
                     class="text-[#654321] hover:text-[#8B4513] focus:outline-none p-2 hover:bg-white/50 rounded-lg transition-all relative">
@@ -193,16 +195,17 @@
 
 <!-- Mobile Left Side Menu -->
 <div id="mobile-menu"
-    class="fixed inset-y-0 left-0 w-80 bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out z-[9999] overflow-y-auto lg:hidden">
-    <div class="p-6">
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
-            <h2 class="text-xl font-serif font-bold text-[#654321]">Menu</h2>
-            <button id="mobile-menu-close" class="text-gray-400 hover:text-[#8B4513] transition-colors">
-                <i class="fi fi-rr-cross text-2xl"></i>
-            </button>
-        </div>
+    class="fixed inset-y-0 left-0 w-80 bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out z-[9999] flex flex-col lg:hidden">
+    <!-- Fixed Header -->
+    <div class="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
+        <h2 class="text-xl font-serif font-bold text-[#654321]">Aura kurti</h2>
+        <button id="mobile-menu-close" class="text-gray-400 hover:text-[#8B4513] transition-colors">
+            <i class="fi fi-rr-cross text-2xl"></i>
+        </button>
+    </div>
 
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto p-6">
         <!-- Navigation Links -->
         <div class="space-y-1">
             <a href="{{ route('home') }}"
@@ -225,8 +228,28 @@
                     <a href="{{ route('women') }}"
                         class="block py-2 px-4 text-sm text-gray-600 hover:text-[#8B4513] hover:bg-[#F5F1EB] rounded transition-colors">All
                         Women</a>
-                    <a href="{{ route('women.kurti') }}"
-                        class="block py-2 px-4 text-sm text-gray-600 hover:text-[#8B4513] hover:bg-[#F5F1EB] rounded transition-colors">Kurtis</a>
+                    <!-- Kurtis with nested submenu -->
+                    <div class="mobile-menu-item-nested">
+                        <div class="flex items-center justify-between">
+                            <a href="{{ route('women.kurti') }}"
+                                class="flex-1 py-2 px-4 text-sm text-gray-600 hover:text-[#8B4513] hover:bg-[#F5F1EB] rounded transition-colors font-medium">Kurtis</a>
+                            <button class="mobile-submenu-toggle-nested p-2 text-gray-600 hover:text-[#8B4513] hover:bg-[#F5F1EB] rounded transition-colors">
+                                <i class="fi fi-rr-angle-small-down text-xs transition-transform duration-300"></i>
+                            </button>
+                        </div>
+                        <div class="mobile-menu-submenu-nested hidden pl-4 mt-1 space-y-1">
+                            <a href="{{ route('kurtis') }}"
+                                class="block py-1.5 px-4 text-xs text-gray-500 hover:text-[#8B4513] hover:bg-[#F5F1EB] rounded transition-colors">All Kurtis</a>
+                            <a href="{{ route('kurtis.anarkali') }}"
+                                class="block py-1.5 px-4 text-xs text-gray-500 hover:text-[#8B4513] hover:bg-[#F5F1EB] rounded transition-colors">Anarkali</a>
+                            <a href="{{ route('kurtis.straight') }}"
+                                class="block py-1.5 px-4 text-xs text-gray-500 hover:text-[#8B4513] hover:bg-[#F5F1EB] rounded transition-colors">Straight Cut</a>
+                            <a href="{{ route('kurtis.a-line') }}"
+                                class="block py-1.5 px-4 text-xs text-gray-500 hover:text-[#8B4513] hover:bg-[#F5F1EB] rounded transition-colors">A-Line</a>
+                            <a href="{{ route('kurtis.printed') }}"
+                                class="block py-1.5 px-4 text-xs text-gray-500 hover:text-[#8B4513] hover:bg-[#F5F1EB] rounded transition-colors">Printed</a>
+                        </div>
+                    </div>
                     <a href="{{ route('women.tops') }}"
                         class="block py-2 px-4 text-sm text-gray-600 hover:text-[#8B4513] hover:bg-[#F5F1EB] rounded transition-colors">Tops</a>
                     <a href="{{ route('women.dresses') }}"
@@ -357,18 +380,21 @@
 
 <!-- Right Side Search Panel -->
 <div id="search-panel"
-    class="fixed inset-y-0 right-0 w-full sm:w-96 lg:w-[500px] bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
-    <div class="p-6">
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
+    class="fixed inset-y-0 right-0 w-full sm:w-96 lg:w-[500px] bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-[9999] flex flex-col">
+    <!-- Header - Fixed -->
+    <div class="p-6 border-b border-gray-200 flex-shrink-0">
+        <div class="flex items-center justify-between">
             <h2 class="text-2xl font-serif font-bold text-[#654321]">Search Products</h2>
             <button id="search-panel-close" class="text-gray-400 hover:text-[#8B4513] transition-colors">
                 <i class="fi fi-rr-cross text-2xl"></i>
             </button>
         </div>
+    </div>
 
-        <!-- Search Input -->
-        <div class="mb-6 relative">
+    <!-- Content - Scrollable -->
+    <div class="flex-1 overflow-y-auto p-6">
+        <!-- Search Input - Fixed at top -->
+        <div class="mb-6 relative sticky top-0 bg-white z-10 pb-2 -mt-6 pt-6">
             <div class="flex gap-2">
                 <input type="text" id="search-panel-input" placeholder="Search products..."
                     class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B4513] focus:border-[#8B4513] outline-none text-[#654321] placeholder-gray-400">
@@ -386,7 +412,7 @@
         </div>
 
         <!-- Category Cards -->
-        <div>
+        <div id="search-categories" class="mb-6">
             <h3 class="text-lg font-semibold text-[#654321] mb-4">Browse Categories</h3>
             <div class="grid grid-cols-3 gap-4">
                 <!-- Gen Alpha Card -->
@@ -430,14 +456,11 @@
             </div>
         </div>
 
-        <!-- Search Results -->
-        <div id="search-panel-results" class="mt-6 hidden">
+        <!-- Search Results - Scrollable -->
+        <div id="search-panel-results" class="hidden">
             <h3 class="text-lg font-semibold text-[#654321] mb-4">Search Results</h3>
             <div class="space-y-3" id="search-results-list"></div>
         </div>
-        
-        <!-- Toast Notification Container -->
-        <div id="toast-container" class="fixed top-4 right-4 z-[9999] space-y-2"></div>
     </div>
 </div>
 
@@ -471,14 +494,16 @@
 
 <!-- Cart Sidebar -->
 <div id="cart-sidebar"
-    class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col">
-    <div class="p-6 flex-1 overflow-y-auto">
-        <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
+    class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-[9999] flex flex-col">
+    <div class="p-6 border-b border-gray-200 flex-shrink-0">
+        <div class="flex items-center justify-between">
             <h2 class="text-2xl font-serif font-bold text-[#654321]">Shopping Cart</h2>
             <button id="cart-close" class="text-gray-400 hover:text-[#8B4513] transition-colors">
                 <i class="fi fi-rr-cross text-2xl"></i>
             </button>
         </div>
+    </div>
+    <div class="flex-1 overflow-y-auto p-6">
         <div id="cart-items" class="space-y-4">
             <div class="text-center py-12">
                 <i class="fi fi-rr-shopping-bag text-6xl text-gray-300 mb-4"></i>
@@ -486,7 +511,7 @@
             </div>
         </div>
     </div>
-    <div class="border-t border-gray-200 pt-4 pb-4 px-6 bg-white">
+    <div class="border-t border-gray-200 pt-4 pb-4 px-6 bg-white flex-shrink-0">
         <div class="flex justify-between mb-4">
             <span class="text-lg font-semibold text-[#654321]">Total:</span>
             <span id="cart-total" class="text-xl font-bold text-[#8B4513]">₹0</span>

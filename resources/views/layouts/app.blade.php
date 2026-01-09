@@ -46,6 +46,10 @@
     
     <!-- Bottom Navigation (Mobile) -->
     <x-bottom-nav />
+    
+    <!-- Toast Notification Container (Global) -->
+    <div id="toast-container" class="fixed top-4 right-4 z-[9999] space-y-2"></div>
+    
     <!-- JavaScript Files -->
     <script src="{{ asset('js/toast.js') }}"></script>
     <script src="{{ asset('js/header-functions.js') }}"></script>
@@ -59,35 +63,40 @@
     
     <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // LIKE
-        document.addEventListener('click', e => {
-            const btn = e.target.closest('.action-like');
-            if (!btn) return;
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            btn.classList.toggle('bg-[#654321]');
-            btn.classList.toggle('text-white');
-            btn.classList.toggle('bg-white');
-            btn.classList.toggle('text-[#654321]');
-
-            btn.querySelector('i').classList.toggle('fi-rr-heart');
-            btn.querySelector('i').classList.toggle('fi-sr-heart');
-        });
-
-        // CART
+        // CART - Handle action-cart buttons (toggle behavior)
         document.addEventListener('click', e => {
             const btn = e.target.closest('.action-cart');
-            if (!btn) return;
+            if (!btn || !window.cartManager) return;
 
             e.preventDefault();
             e.stopPropagation();
 
-            btn.classList.toggle('bg-[#654321]');
-            btn.classList.toggle('text-white');
-            btn.classList.toggle('bg-white');
-            btn.classList.toggle('text-[#654321]');
+            const productId = btn.getAttribute('data-product-id');
+            const productName = btn.getAttribute('data-product-name');
+            const productPrice = parseFloat(btn.getAttribute('data-product-price'));
+            const productImage = btn.getAttribute('data-product-image');
+
+            if (productId && productName && productPrice) {
+                const product = {
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    image: productImage || '',
+                    size: 'M',
+                    quantity: 1
+                };
+                
+                // Check if product is already in cart
+                const isInCart = window.cartManager.cart.some(item => item.id === productId && item.size === 'M');
+                
+                if (isInCart) {
+                    // Remove from cart
+                    window.cartManager.removeFromCart(productId, 'M');
+                } else {
+                    // Add to cart
+                    window.cartManager.addToCart(product);
+                }
+            }
         });
     });
     </script>

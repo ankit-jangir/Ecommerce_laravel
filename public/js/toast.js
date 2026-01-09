@@ -1,6 +1,10 @@
 // Toast Notification System
 function showToast(message, type = 'info', duration = 3000) {
-    const container = document.getElementById('toast-container') || createToastContainer();
+    // Ensure container exists
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = createToastContainer();
+    }
     
     const toast = document.createElement('div');
     toast.className = `toast-notification toast-${type} transform translate-x-full transition-all duration-300`;
@@ -40,7 +44,9 @@ function showToast(message, type = 'info', duration = 3000) {
     setTimeout(() => {
         toast.classList.add('translate-x-full');
         setTimeout(() => {
-            toast.remove();
+            if (toast.parentNode) {
+                toast.remove();
+            }
         }, 300);
     }, duration);
 }
@@ -52,4 +58,7 @@ function createToastContainer() {
     document.body.appendChild(container);
     return container;
 }
+
+// Make showToast globally available
+window.showToast = showToast;
 
